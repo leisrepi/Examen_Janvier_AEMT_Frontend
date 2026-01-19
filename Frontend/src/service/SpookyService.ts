@@ -24,3 +24,9 @@ export const updateNote = async (note: Note): Promise<Note> => {
     const response = await axios.put<Note>(`${API_BASE_URL}/note/${note.idNote}`, note);
     return response.data;
 }
+export const deleteNote = async (noteId: string): Promise<void> => {
+    await axios.delete(`${API_BASE_URL}/note/${noteId}`);
+}
+export const deleteFolder = async (folderId: string): Promise<void> => {
+    await axios.delete(`${API_BASE_URL}/folder/${folderId}`);
+}
