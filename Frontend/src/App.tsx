@@ -1,33 +1,22 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
+import FolderComponent from './components/folderComponent'
+import type { Item } from './components/folderComponent'
+
+
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [foldersAndNotes, setFoldersAndNotes] = useState<Item[]>([
+    { idFolder: 1, nameFolder: "Work", idParent: 0 },
+    { idFolder: 2, nameFolder: "Personal", idParent: 0 },
+    { idNote: 1, nameNote: "Meeting Notes", contentNote: "Discuss project timeline", creationDateNote: new Date(), lastModificationNote: new Date(), idFolder: 1 },
+  ]);
 
+  const rootFolderName :string = "root";
+  
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <FolderComponent rootFolderName={rootFolderName} foldersAndNotes={foldersAndNotes} />
     </>
   )
 }
