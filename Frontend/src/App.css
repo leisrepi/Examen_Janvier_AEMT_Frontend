@@ -1,22 +1,24 @@
-.FolderComponent, .OpenNoteComponent {
-  margin: 0 0 0 30px;
-  padding: 0;
+
+
+div.MainDiv {
+  display: flex;
+  gap: 20px;
 }
 
-.FolderComponent h2, .OpenNoteComponent h3 {
-  margin: 3px;
-  border-radius: 10px;
-  background-color: #fed199;
-  padding: 5px;
-  border : 1px solid black;
+/*pour que le folder root sois coller a droite*/
+div.ExplorerDiv > .FolderComponent {
+  margin-left: 0;
 }
 
-.FolderComponent h2:hover, .OpenNoteComponent h3:hover {
-  background-color: #ef8f00;
-  cursor: pointer;
+div.ExplorerDiv {
+  width: 400px;
+  border-right: 5px solid #ba4400;
   
+  background-color: #d6a360;
+  padding-right: 5px;
+  height: calc(100vh - 40px);
 }
 
-.FolderClosed {
-  background-color: aqua;
+div.OpenedNote {
+  
 }
