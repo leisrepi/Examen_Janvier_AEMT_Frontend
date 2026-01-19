@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { type Note } from '../types/Note';
-import { updateNote } from '../service/SpookyService'; // Ton service fusionné ou séparé
+import { updateNote } from '../service/SpookyService'; 
 
 interface NoteComponentProps {
   note: Note; // La note à afficher/modifier
