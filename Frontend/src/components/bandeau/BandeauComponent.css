@@ -1,0 +1,80 @@
+
+
+.bandeau {
+    width: 100%; /* occupe toute la largeur */
+    height: 20%;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed; /* le rend fixe */
+    top: 0; /* collé en haut */
+    left: 0; /* collé à gauche */
+    z-index: 1000; /* au-dessus des autres éléments */
+    
+    background-image: url("../../assets/background_bandeau.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+
+h1 {
+    font-size: 5rem;
+    color: orangered;
+    font-family: "creakingCrypt", sans-serif;
+    text-shadow: 2px 2px 2px black;
+    z-index: 1;
+}
+
+
+.ghost {
+    width: 80px;
+    height: auto;
+    position: absolute; /* superpose le fantôme */
+    left: 50%; /* point de départ centré */
+    transform: translateX(-50%); /* corrige le centrage */
+    animation: waveMove 20s infinite ease-in-out;
+    z-index: 2; /* devant le titre */
+}
+
+#root {
+    padding : 0;
+    margin: 0;
+}
+
+@keyframes waveMove {
+    0% {
+        transform: translateX(-20vw) translateY(0vw) rotate(5deg);
+    }
+    10% {
+        transform: translateX(15vw) translateY(-1vw) rotate(-5deg);
+    }
+    20% {
+        transform: translateX(-20vw) translateY(0vw) rotate(5deg);
+    }
+    30% {
+        transform: translateX(15vw) translateY(-2vw) rotate(-5deg);
+    }
+    40% {
+        transform: translateX(-20vw) translateY(0vw) rotate(5deg);
+    }
+    50% {
+        transform: translateX(15vw) translateY(2vw) rotate(-5deg);
+    }
+    60% {
+        transform: translateX(-20vw) translateY(1vw) rotate(5deg);
+    }
+    70% {
+        transform: translateX(15vw) translateY(0vw) rotate(-5deg);
+    }
+    80% {
+        transform: translateX(-20vw) translateY(-2vw) rotate(5deg);
+    }
+    90% {
+        transform: translateX(15vw) translateY(-1vw) rotate(-5deg);
+    }
+    100% {
+        transform: translateX(-20vw) translateY(0vw) rotate(5deg);
+    }
+}

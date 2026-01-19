@@ -5,7 +5,7 @@
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  background-color: #f9f9f9;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -56,7 +56,6 @@ button:focus-visible {
 
 @media (prefers-color-scheme: light) {
   :root {
-    color: #213547;
     background-color: #ffffff;
   }
   a:hover {
@@ -66,3 +65,26 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+
+/* Fonts */
+@font-face {
+    font-family: 'creakingCrypt';
+    src: url('./assets/fonts/CreakingCrypt-Regular.woff2') format('woff2'),
+         url('./assets/fonts/CreakingCrypt-Regular.woff') format('woff'),
+         url('./assets/fonts/CreakingCrypt-Regular.ttf') format('truetype'),
+         url('./assets/fonts/CreakingCrypt-Regular.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'stoneTomb';
+    src: url('./assets/fonts/StoneTomb.woff2') format('woff2'),
+         url('./assets/fonts/StoneTomb.woff') format('woff'),
+         url('./assets/fonts/StoneTomb.ttf') format('truetype'),
+         url('./assets/fonts/StoneTomb.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
