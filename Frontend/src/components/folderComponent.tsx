@@ -27,7 +27,9 @@ export default function FolderComponent({rootFolderName, foldersAndNotes}: Props
 
   return (
     <div className="FolderComponent">
-        <h2 onClick={() => setFolderOpen(!folderOpen)}> {folderOpen ? "📂" : "📁"} {rootFolderName}</h2>
+        <h2 onClick={() => setFolderOpen(!folderOpen)} className={folderOpen ? "FolderOpen" : "FolderClosed"}>
+            {folderOpen ? "📂" : "📁"} {rootFolderName}
+        </h2>
         
         {folderOpen && foldersAndNotes.map((item : Item) => {
                 if ("nameFolder" in item) {
