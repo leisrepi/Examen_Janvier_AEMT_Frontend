@@ -35,14 +35,14 @@ export default function FolderComponent({folderInfo, foldersAndNotes}: Props)  {
     const [folderOpen, setFolderOpen] = useState<boolean>(false);
     const [menuContextuel, setMenuContextuel] = useState<MenuContextuelProps | null>(null);
 
-
-    /*------------------------------UseEffect--------------------------------*/
+/*
+    /*------------------------------UseEffect--------------------------------
     useEffect(() => {
         setSpiderLeft(5 + Math.random() * 100);
         console.log(spiderLeft);
     }, []);
 
-    /*------------------------------Fonction--------------------------------*/
+    /*------------------------------Fonction--------------------------------
 
     function fetchChildItems(){
         getFolderChildreen(folderInfo.idFolder).then((items : Item[]) => {
@@ -61,7 +61,7 @@ export default function FolderComponent({folderInfo, foldersAndNotes}: Props)  {
         
     }
 
-    /*-------------------------------Event---------------------------------*/
+    /*-------------------------------Event---------------------------------
 
     const handleRightClick = (event) => {
         event.preventDefault(); // Empêche le menu contextuel par défaut
