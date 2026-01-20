@@ -1,8 +1,13 @@
 
 
+
+
 import React, { useState, useEffect } from 'react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import { useSpooky } from '../contexts/SpookyContext';
 import type { Note } from '../types/Note';
+import './Markdown.css'; // CSS pour le style Halloween
 
 interface NoteComponentProps {
   note: Note;
@@ -12,6 +17,7 @@ const NoteComponent: React.FC<NoteComponentProps> = ({ note }) => {
   const { updateExistingNote, removeNote } = useSpooky();
   const [title, setTitle] = useState(note.nameNote);
   const [content, setContent] = useState(note.contentNote || '');
+  const [isEditing, setIsEditing] = useState(true);
   const [metadata, setMetadata] = useState({
     sizeBytes: 0,
     wordCount: 0,
@@ -19,6 +25,7 @@ const NoteComponent: React.FC<NoteComponentProps> = ({ note }) => {
     lineCount: 0,
   });
 
+  // Calcul des métadonnées en temps réel
   useEffect(() => {
     const safeContent = content || '';
     const sizeBytes = new Blob([safeContent]).size;
@@ -37,25 +44,47 @@ const NoteComponent: React.FC<NoteComponentProps> = ({ note }) => {
     };
     await updateExistingNote(updatedNote);
     alert('Note sauvegardée avec succès !');
+    setIsEditing(false);
   };
 
   return (
     <div style={{ padding: '10px', border: '1px solid #ccc' }}>
-      <h2>Édition de la note</h2>
-      <input
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        style={{ width: '100%', marginBottom: '10px' }}
-      />
-      <textarea
-        value={content}
-        onChange={(e) => setContent(e.target.value)}
-        rows={15}
-        style={{ width: '100%' }}
-        placeholder="Écrivez en Markdown..."
-      />
+      <h2>📓 {isEditing ? 'Mode Écriture' : 'Mode Lecture'}</h2>
+
+      {/* Titre */}
+      {isEditing ? (
+        <input
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          style={{ width: '100%', marginBottom: '10px' }}
+        />
+      ) : (
+        <h3>{title}</h3>
+      )}
+
+      {/* Contenu */}
+      {isEditing ? (
+        <textarea
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+          rows={15}
+          style={{ width: '100%' }}
+          placeholder="Écrivez en Markdown..."
+        />
+      ) : (
+        <div className="markdown-body">
+          <ReactMarkdown remarkPlugins={[remarkGfm]}>
+            {content}
+          </ReactMarkdown>
+        </div>
+      )}
+
+      {/* Boutons */}
       <div style={{ marginTop: '10px' }}>
-        <button onClick={handleSave}>💾 Enregistrer</button>
+        <button onClick={() => setIsEditing(!isEditing)}>
+          {isEditing ? 'Mode Lecture' : 'Mode Écriture'}
+        </button>
+        {isEditing && <button onClick={handleSave}>💾 Enregistrer</button>}
         <button onClick={() => removeNote(note.idNote)}>🗑 Supprimer</button>
       </div>
 
@@ -73,6 +102,8 @@ const NoteComponent: React.FC<NoteComponentProps> = ({ note }) => {
 };
 
 export default NoteComponent;
+
+
 
 
 /*import React, { useState, useEffect } from 'react';

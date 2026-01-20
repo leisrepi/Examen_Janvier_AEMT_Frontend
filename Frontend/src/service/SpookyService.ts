@@ -56,13 +56,23 @@ export const createNote = async (folderId: number, nameNote: string, contentNote
 };
 
 
-export const updateNote = async (note: Note): Promise<Note> => {
+/*export const updateNote = async (note: Note): Promise<Note> => {
     const response = await axios.put<Note>(`${API_BASE_URL}/note/${note.idNote}`, {
         ...note,
         folder: { idFolder: note.idFolder } 
     });
     return response.data;
+};*/
+
+export const updateNote = async (note: Note): Promise<Note> => {
+    const response = await axios.put<Note>(`${API_BASE_URL}/note/${note.idNote}`, {
+        nameNote: note.nameNote,       
+        contentNote: note.contentNote, 
+        idFolder: note.idFolder    
+    });
+    return response.data;
 };
+
 
 export const deleteNote = async (noteId: number): Promise<void> => {
     await axios.delete(`${API_BASE_URL}/note/${noteId}`);
