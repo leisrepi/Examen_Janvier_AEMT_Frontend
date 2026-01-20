@@ -5,7 +5,7 @@ import MenuContextuelComponent from './MenuContextuelComponent';
 import {useEffect, useState } from 'react';
 import OpenNoteComponent from './openNoteComponent';
 import SpiderImage from "../assets/Spider.png";
-import {createFolder, getFolderChildreen} from '../service/SpookyService';
+import {createFolder, getFolderChildreen, deleteFolder, updateFolderName} from '../service/SpookyService';
 
 
 
@@ -25,6 +25,7 @@ interface Props {
 
 export default function FolderComponent({folderInfo}: Props)  {
     const [childfoldersAndNotes, setChildFoldersAndNotes] = useState<Item[]>([]);
+    const [folderName, setFolderName] = useState<string>(folderInfo.nameFolder);
     /*const [childfoldersAndNotes, setChildFoldersAndNotes] = useState<Item[]>([
         { idFolder: 1, nameFolder: "Work", idParent: 0 },
         { idFolder: 2, nameFolder: "Personal", idParent: 0 },
@@ -39,6 +40,7 @@ export default function FolderComponent({folderInfo}: Props)  {
     /*------------------------------UseEffect--------------------------------*/
     useEffect(() => {
         setSpiderLeft(5 + Math.random() * 100);
+        setFolderName(folderInfo.nameFolder);
         console.log(spiderLeft);
     }, []);
 
@@ -57,10 +59,29 @@ export default function FolderComponent({folderInfo}: Props)  {
             return;
         }
         fetchChildItems();
-        
-        
     }
     
+    async function deleteFolderClick(){  
+        if (!confirm("Voulez-vous vraiment supprimer ce dossier ?")) {
+            return; //refuser on quitte la fonction   
+        }
+        await deleteFolder(folderInfo.idFolder);
+        fetchChildItems();
+    }
+
+    function renameFolderClick(){
+        const info = prompt("Veuillez entrer un nouveau nom :");
+        if (info) {
+            console.log("Nom saisi :", info);
+            setFolderName(info);
+            folderInfo.nameFolder = info;
+            //Appel service pour renommer le dossier
+            updateFolderName(folderInfo).then(() => fetchChildItems());
+        } else {
+            console.log("Aucune info saisie");
+        }
+        console.log("Renommer dossier");
+    }
 
     /*-------------------------------Event---------------------------------*/
 
@@ -73,8 +94,8 @@ export default function FolderComponent({folderInfo}: Props)  {
         setMenuContextuel({
             position: { x: event.pageX - 10, y: event.pageY - 10},
             actions: [
-            { label: "Renommer TMP", onClick: () => console.log("Renommer") },
-            { label: "Supprimer TMP", onClick: () => console.log("Supprimer") },
+            { label: "Renommer TMP", onClick: () => renameFolderClick() },
+            { label: "Supprimer", onClick: () => deleteFolderClick() },
             { label: "Ajouté sous dossier", onClick: () => createFolder(folderInfo.idFolder).then(() => fetchChildItems()) },
             { label: "Ajouté note", onClick: () => console.log("Propriétés") },
             ],

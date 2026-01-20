@@ -68,9 +68,18 @@ export const updateNote = async (note: Note): Promise<Note> => {
     return response.data;
 };
 
+export const updateFolderName = async (folder: Folder): Promise<Folder> => {
+    const response = await axios.put<Folder>(`${API_BASE_URL}/folder/${folder.idFolder}`, {
+        "name": folder.nameFolder,
+    });
+    return response.data;
+};
+
 export const deleteNote = async (noteId: number): Promise<void> => {
     await axios.delete(`${API_BASE_URL}/note/${noteId}`);
 }
 export const deleteFolder = async (folderId: number): Promise<void> => {
     await axios.delete(`${API_BASE_URL}/folder/${folderId}`);
 }
+
+
