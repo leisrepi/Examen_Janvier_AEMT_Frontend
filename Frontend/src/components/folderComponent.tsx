@@ -1,4 +1,4 @@
-import type { Folder } from '../types/Folder';
+/*import type { Folder } from '../types/Folder';
 import type { Note } from '../types/Note';
 import {useEffect, useState } from 'react';
 import OpenNoteComponent from './openNoteComponent';
@@ -29,7 +29,7 @@ export default function FolderComponent({folderInfo, foldersAndNotes}: Props)  {
         { idNote: 1, nameNote: "Meeting Notes", contentNote: "Discuss project timeline", creationDateNote: new Date(), lastModificationNote: new Date(), idFolder: 1 },
     ]);*/
 
-    const [spiderLeft, setSpiderLeft] = useState<number>(0);
+   /* const [spiderLeft, setSpiderLeft] = useState<number>(0);
     const [folderOpen, setFolderOpen] = useState<boolean>(false);
     useEffect(() => {
         setSpiderLeft(5 + Math.random() * 100);
@@ -73,4 +73,69 @@ export default function FolderComponent({folderInfo, foldersAndNotes}: Props)  {
         )}
     </div>
   )
+}*/
+
+
+
+import { useState } from 'react';
+import { useSpooky } from '../contexts/SpookyContext';
+import type { Folder } from '../types/Folder';
+import type { Note } from '../types/Note';
+import SpiderImage from '../assets/Spider.png'; // ton image Halloween
+import './FolderComponent.css';
+
+interface Props {
+  folderInfo: Folder;
 }
+
+export default function FolderComponent({ folderInfo }: Props) {
+  const { setOpenedNote, addNote, removeFolder } = useSpooky();
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleFolder = () => {
+    setIsOpen(!isOpen);
+  };
+
+  return (
+    <div className="FolderComponent">
+      {/* Titre du dossier */}
+      <h2
+        className={isOpen ? 'FolderOpen' : 'FolderClosed'}
+        onClick={toggleFolder}
+      >
+        {isOpen ? '📂' : '📁'} {folderInfo.nameFolder}
+      </h2>
+
+      {/* Image Halloween */}
+      <img src={SpiderImage} alt="Spider" className="MonsterImage" />
+
+      {/* Boutons d'action */}
+      <div style={{ marginBottom: '10px' }}>
+        <button onClick={() => addNote(folderInfo.idFolder, 'Nouvelle Note', '')}>
+          ➕ Ajouter note
+        </button>
+        <button onClick={() => removeFolder(folderInfo.idFolder)}>🗑 Supprimer dossier</button>
+      </div>
+
+      {/* Affichage des notes si le dossier est ouvert */}
+      {isOpen && (
+        <div style={{ marginLeft: '20px' }}>
+          {(folderInfo.notes ?? []).length > 0 ? (
+            folderInfo.notes.map((note: Note) => (
+              <div
+                key={`note-${note.idNote}`}
+                onClick={() => setOpenedNote(note)}
+                style={{ cursor: 'pointer', marginBottom: '5px' }}
+              >
+                📝 {note.nameNote}
+              </div>
+            ))
+          ) : (
+            <p>Aucune note dans ce dossier</p>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
