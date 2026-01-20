@@ -70,7 +70,7 @@ export default function FolderComponent({folderInfo, foldersAndNotes}: Props)  {
         }
         
         setMenuContextuel({
-            position: { x: event.pageX - 40, y: event.pageY - 10},
+            position: { x: event.pageX - 10, y: event.pageY - 10},
             actions: [
             { label: "Renommer TMP", onClick: () => console.log("Renommer") },
             { label: "Supprimer TMP", onClick: () => console.log("Supprimer") },

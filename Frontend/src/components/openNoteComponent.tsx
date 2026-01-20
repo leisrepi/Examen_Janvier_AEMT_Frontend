@@ -1,6 +1,7 @@
 import { useState } from "react";
 import type  { Note } from "../types/Note";
 import MenuContextuelComponent from "./menuContextuelComponent";
+import type { MenuContextuelProps } from "./menuContextuelComponent";
 
 interface Props {
     note: Note;
@@ -21,7 +22,7 @@ export default function OpenNoteComponent({note}: Props) {
         }
         
         setMenuContextuel({
-            position: { x: event.pageX - 0, y: event.pageY - 10},
+            position: { x: event.pageX - 10, y: event.pageY - 10},
             actions: [
             { label: "Renommer TMP", onClick: () => console.log("Renommer") },
             { label: "Supprimer TMP", onClick: () => console.log("Supprimer") },
