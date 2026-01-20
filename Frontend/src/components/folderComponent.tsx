@@ -16,6 +16,7 @@ export type Item = Folder | Note;
 
 interface Props {
     folderInfo: Folder;
+    updateParent? : () => void;
 }
 
 
@@ -46,7 +47,8 @@ export default function FolderComponent({folderInfo, updateParent}: Props)  {
     function fetchChildItems(){
         getFolderChildreen(folderInfo.idFolder).then((items : Item[]) => {
             setChildFoldersAndNotes([...items]);
-            console.log(childfoldersAndNotes);
+            console.log("Fetched child items:");
+            console.log(items);
         });
     }
     
@@ -132,10 +134,10 @@ export default function FolderComponent({folderInfo, updateParent}: Props)  {
         {folderOpen && childfoldersAndNotes.map((item : Item) => {
                 if ("nameFolder" in item) {
                     let folder = item as Folder;
-                    return <FolderComponent folderInfo={folder} updateParent={fetchChildItems} />;
+                    return <FolderComponent key={`folder-${folder.idFolder}`} folderInfo={folder} updateParent={fetchChildItems} />;
                 }else{
                     let note = item as Note;
-                    return <OpenNoteComponent note={note} updateParent={fetchChildItems} />;
+                    return <OpenNoteComponent key={`note-${note.idNote}`} note={note} updateParent={fetchChildItems} />;
                 }
             }
         )}
