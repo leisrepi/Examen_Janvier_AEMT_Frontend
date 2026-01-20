@@ -42,26 +42,46 @@ function App() {
 // src/App.tsx
 
 
+import { useEffect, useState } from 'react';
 import './App.css';
-import FolderComponent from './components/folderComponent';
+import FolderComponent from './components/FolderComponent';
 import NoteComponent from './components/NoteComponent';
 import { SpookyProvider, useSpooky } from './contexts/SpookyContext';
+import type { Item } from './service/SpookyService';
+import OpenNoteComponent from './components/openNoteComponent';
+import type { Note } from './types/Note';
+import type { Folder } from './types/Folder';
+import { getAllFolders } from './service/SpookyService';
+
 
 function AppContent() {
-  const { folders, openedNote } = useSpooky();
+  const {openedNote} = useSpooky();
+  const [foldersAndNotes, setFoldersAndNotes] = useState<Item[]>([]);
+
+
+  useEffect(() => {
+    getAllFolders().then((items : Item[]) => {
+        setFoldersAndNotes([...items]);
+        console.log(foldersAndNotes);
+    });
+  }, []);
+  
 
   return (
     <div className="MainDiv">
       {/* Barre latérale */}
       <div className="ExplorerDiv">
         <h2>Explorateur</h2>
-        {folders.length > 0 ? (
-          folders.map((folder) => (
-            <FolderComponent key={`folder-${folder.idFolder}`} folderInfo={folder} />
-          ))
-        ) : (
-          <p>Aucun dossier trouvé</p>
-        )}
+        
+        {foldersAndNotes.map((item : Item) => {
+          if ("nameFolder" in item) {
+              let folder = item as Folder;
+              return <FolderComponent folderInfo={folder}/>;
+          }else{
+              let note = item as Note;
+              return <OpenNoteComponent note={note} />;
+          }
+        })}
       </div>
 
       {/* Zone de contenu */}

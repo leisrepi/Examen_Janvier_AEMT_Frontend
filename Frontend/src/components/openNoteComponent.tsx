@@ -1,7 +1,7 @@
 import { useState } from "react";
 import type  { Note } from "../types/Note";
-import MenuContextuelComponent from "./menuContextuelComponent";
-import type { MenuContextuelProps } from "./menuContextuelComponent";
+import MenuContextuelComponent from "./MenuContextuelComponent";
+import type { MenuContextuelProps } from "./MenuContextuelComponent";
 
 interface Props {
     note: Note;
