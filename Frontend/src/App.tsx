@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import './App.css'
 
-import type { Item } from './components/folderComponent';
-import FolderComponent from './components/folderComponent';
+import type { Item } from './components/FolderComponent';
+import FolderComponent from './components/FolderComponent';
 import NoteComponent from './components/NoteComponent';
 import type { Note } from './types/Note';
 
