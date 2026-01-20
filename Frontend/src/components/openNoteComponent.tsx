@@ -2,6 +2,8 @@ import { useState } from "react";
 import type  { Note } from "../types/Note";
 import MenuContextuelComponent from "./MenuContextuelComponent";
 import type { MenuContextuelProps } from "./MenuContextuelComponent";
+import { useContext } from "react";
+import {SpookyContext}  from "../contexts/SpookyContext";
 
 interface Props {
     note: Note;
@@ -11,6 +13,10 @@ interface Props {
 
 
 export default function OpenNoteComponent({note}: Props) {
+  const spookyContext = useContext(SpookyContext);
+
+  if (!spookyContext) return null; // Sécurité si le contexte est null
+
 
   /*Menu contextuel*/
   const [menuContextuel, setMenuContextuel] = useState<MenuContextuelProps | null>(null);
@@ -34,10 +40,14 @@ export default function OpenNoteComponent({note}: Props) {
 
     };
 
+  const openFile = () => {
+    spookyContext.setOpenedNote(note);
+  }
+
 
   return (
     <div className="OpenNoteComponent">
-        <h3 onContextMenu={handleRightClick}>🗒️ {note.nameNote}</h3>
+        <h3 onContextMenu={handleRightClick} onClick={openFile}>🗒️ {note.nameNote}</h3>
         {menuContextuel && (
           <MenuContextuelComponent
             position={menuContextuel.position}

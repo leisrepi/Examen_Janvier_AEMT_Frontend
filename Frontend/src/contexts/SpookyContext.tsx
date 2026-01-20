@@ -20,7 +20,7 @@ interface SpookyContextType {
   removeNote: (id: number) => Promise<void>;
 }
 
-const SpookyContext = createContext<SpookyContextType | undefined>(undefined);
+export const SpookyContext = createContext<SpookyContextType | undefined>(undefined);
 
 export const SpookyProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [openedNote, setOpenedNote] = useState<Note | null>(null);
