@@ -88,3 +88,18 @@ button:focus-visible {
     font-style: normal;
 }
 
+@font-face {
+    font-family: 'quickSpooky';
+    src: url('./assets/fonts/Quick Spooky.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'spookyTheme';
+    src: url('./assets/fonts/Spooky Theme.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+

@@ -1,0 +1,46 @@
+.FolderComponent, .OpenNoteComponent {
+  margin: 0 0 0 30px;
+  padding: 0;
+  z-index: 0;
+  position: relative;
+}
+
+.FolderComponent h3, .OpenNoteComponent h4 {
+  margin: 3px;
+  border-radius: 10px;
+  background-color: #fed199;
+  padding: 5px;
+  border : 1px solid black;
+}
+
+.FolderComponent h3:hover, .OpenNoteComponent h4:hover {
+  background-color: #ef8f00;
+  cursor: pointer;
+  
+}
+
+.FolderComponent h3:hover + .MonsterImage {
+  transform: scale(2);
+  transform: translateY(-20px);
+  
+}
+
+.MonsterImage {
+  width: 30px;
+  height: 30px;
+  transition: transform 0.2s;
+  z-index: -1;
+  position:absolute;
+  top: 0px;
+}
+
+.FolderClosed {
+  background-color: aqua;
+}
+
+.coffinPic {
+  width: 36px;
+  height: 24px;
+  margin-right: 8px;
+  vertical-align: middle;
+}
