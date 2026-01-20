@@ -67,7 +67,7 @@ div.ExplorerDiv {
 /* Titre fixe */
 .explorateurTitle {
   flex-shrink: 0; /* empêche le titre de rétrécir */
-  padding: 10px;
+  /* padding: 10px; */
   font-size: 2rem;
   text-align: center;
   position: sticky;
@@ -79,7 +79,7 @@ div.ExplorerDiv {
 .explorerContent {
   flex-grow: 1; /* occupe tout l’espace restant */
   overflow-y: auto; /* scroll uniquement ici */
-  padding: 15px;
+  padding-right: 30px;
 }
 
 
