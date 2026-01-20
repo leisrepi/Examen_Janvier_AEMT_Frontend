@@ -1,0 +1,94 @@
+
+// src/context/SpookyContext.tsx
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import {
+  getAllFolders,
+  createFolder,
+  createNote,
+  updateNote,
+  deleteNote,
+  deleteFolder,
+} from '../service/SpookyService';
+import type { Folder } from '../types/Folder';
+import type { Note } from '../types/Note';
+
+interface SpookyContextType {
+  folders: Folder[];
+  openedNote: Note | null;
+  setOpenedNote: (note: Note | null) => void;
+  refreshFolders: () => Promise<void>;
+  addFolder: (name: string) => Promise<void>;
+  removeFolder: (id: number) => Promise<void>;
+  addNote: (folderId: number, nameNote: string, contentNote: string) => Promise<void>;
+  updateExistingNote: (note: Note) => Promise<void>;
+  removeNote: (id: number) => Promise<void>;
+}
+
+const SpookyContext = createContext<SpookyContextType | undefined>(undefined);
+
+export const SpookyProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [folders, setFolders] = useState<Folder[]>([]);
+  const [openedNote, setOpenedNote] = useState<Note | null>(null);
+
+  const refreshFolders = async () => {
+    try {
+      const data = await getAllFolders();
+      setFolders(data);
+    } catch (error) {
+      console.error('Erreur lors du chargement des dossiers :', error);
+    }
+  };
+
+  useEffect(() => {
+    refreshFolders();
+  }, []);
+
+  const addFolder = async (name: string) => {
+    await createFolder(name);
+    await refreshFolders();
+  };
+
+  const removeFolder = async (id: number) => {
+    await deleteFolder(id);
+    await refreshFolders();
+  };
+
+  const addNote = async (folderId: number, nameNote: string, contentNote: string) => {
+    await createNote(folderId, nameNote, contentNote);
+    await refreshFolders();
+  };
+
+  const updateExistingNote = async (note: Note) => {
+    await updateNote(note);
+    await refreshFolders();
+  };
+
+  const removeNote = async (id: number) => {
+    await deleteNote(id);
+    await refreshFolders();
+  };
+
+  return (
+    <SpookyContext.Provider
+      value={{
+        folders,
+        openedNote,
+        setOpenedNote,
+        refreshFolders,
+        addFolder,
+        removeFolder,
+        addNote,
+        updateExistingNote,
+        removeNote,
+      }}
+    >
+      {children}
+    </SpookyContext.Provider>
+  );
+};
+
+export const useSpooky = () => {
+  const context = useContext(SpookyContext);
+  if (!context) throw new Error('useSpooky doit être utilisé dans SpookyProvider');
+  return context;
+};

@@ -21,6 +21,7 @@ export const getAllFolders = async (): Promise<Folder[]> => {
     return response.data;
 }
 export const getNotesInFolder = async (folderId: number): Promise<Note[]> => {
+export const getNotesInFolder = async (folderId: number): Promise<Note[]> => {
     const response = await axios.get<Note[]>(`${API_BASE_URL}/folder/${folderId}/notes`);
     return response.data;
 }
@@ -39,13 +40,42 @@ export const createFolder = async (name: string): Promise<Folder> => {
     const response = await axios.post<Folder>(`${API_BASE_URL}/folder`, { name });
     return response.data;
 }
-export const createNote = async (folderId: number, nameNote: string, contentNote: string): Promise<Note> => {
+/*export const createNote = async (folderId: number, nameNote: string, contentNote: string): Promise<Note> => {
     const response = await axios.post<Note>(`${API_BASE_URL}/note`, { folderId, nameNote, contentNote });
     return response.data;
-}
-export const updateNote = async (note: Note): Promise<Note> => {
-    const response = await axios.put<Note>(`${API_BASE_URL}/note/${note.idNote}`, note);
+}*/
+
+
+
+export const createNote = async (folderId: number, nameNote: string, contentNote: string): Promise<Note> => {
+    const response = await axios.post<Note>(`${API_BASE_URL}/note`, {
+        name: nameNote,      
+        content: contentNote,
+        idFolder: folderId  
+    });
     return response.data;
+};
+
+
+export const updateNote = async (note: Note): Promise<Note> => {
+    const response = await axios.put<Note>(`${API_BASE_URL}/note/${note.idNote}`, {
+        ...note,
+        folder: { idFolder: note.idFolder } 
+    });
+    return response.data;
+};
+
+export const deleteNote = async (noteId: number): Promise<void> => {
+    await axios.delete(`${API_BASE_URL}/note/${noteId}`);
+}
+export const deleteFolder = async (folderId: number): Promise<void> => {
+    await axios.delete(`${API_BASE_URL}/folder/${folderId}`);
+}
+export const deleteNote = async (noteId: number): Promise<void> => {
+    await axios.delete(`${API_BASE_URL}/note/${noteId}`);
+}
+export const deleteFolder = async (folderId: number): Promise<void> => {
+    await axios.delete(`${API_BASE_URL}/folder/${folderId}`);
 }
 export const deleteNote = async (noteId: number): Promise<void> => {
     await axios.delete(`${API_BASE_URL}/note/${noteId}`);
