@@ -5,7 +5,8 @@ import MenuContextuelComponent from './MenuContextuelComponent';
 import {useEffect, useState } from 'react';
 import OpenNoteComponent from './openNoteComponent';
 import SpiderImage from "../assets/Spider.png";
-import {getFolderChildreen} from '../service/SpookyService';
+import {createFolder, getFolderChildreen} from '../service/SpookyService';
+
 
 
 
@@ -59,6 +60,7 @@ export default function FolderComponent({folderInfo}: Props)  {
         
         
     }
+    
 
     /*-------------------------------Event---------------------------------*/
 
@@ -73,8 +75,8 @@ export default function FolderComponent({folderInfo}: Props)  {
             actions: [
             { label: "Renommer TMP", onClick: () => console.log("Renommer") },
             { label: "Supprimer TMP", onClick: () => console.log("Supprimer") },
-            { label: "Ajouté sous dossier", onClick: () => console.log("Propriétés") },
-            { label: "Ajouté sous dossier", onClick: () => console.log("Propriétés") },
+            { label: "Ajouté sous dossier", onClick: () => createFolder(folderInfo.idFolder).then(() => fetchChildItems()) },
+            { label: "Ajouté note", onClick: () => console.log("Propriétés") },
             ],
             onClose: () => setMenuContextuel(null)
         });

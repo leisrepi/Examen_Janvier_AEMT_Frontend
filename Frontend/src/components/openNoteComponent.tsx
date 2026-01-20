@@ -32,8 +32,6 @@ export default function OpenNoteComponent({note}: Props) {
             actions: [
             { label: "Renommer TMP", onClick: () => console.log("Renommer") },
             { label: "Supprimer TMP", onClick: () => console.log("Supprimer") },
-            { label: "Ajouté sous dossier", onClick: () => console.log("Propriétés") },
-            { label: "Ajouté sous dossier", onClick: () => console.log("Propriétés") },
             ],
             onClose: () => setMenuContextuel(null)
         });

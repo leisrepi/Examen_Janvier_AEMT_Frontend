@@ -36,8 +36,11 @@ export const getFolderChildreen = async (folderId: number): Promise<Item[]> => {
     let listFolder = response.data.SousDossier as Folder[];
     return [...listNote, ...listFolder];
 }
-export const createFolder = async (name: string): Promise<Folder> => {
-    const response = await axios.post<Folder>(`${API_BASE_URL}/folder`, { name });
+export const createFolder = async (id : number): Promise<Folder> => {
+    const response = await axios.post<Folder>(`${API_BASE_URL}/folder`, {
+        "nameFolder": "",
+        "parentId": id
+    });
     return response.data;
 }
 /*export const createNote = async (folderId: number, nameNote: string, contentNote: string): Promise<Note> => {
