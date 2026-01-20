@@ -38,17 +38,11 @@ export const getFolderChildreen = async (folderId: number): Promise<Item[]> => {
 }
 export const createFolder = async (id : number): Promise<Folder> => {
     const response = await axios.post<Folder>(`${API_BASE_URL}/folder`, {
-        "nameFolder": "",
+        "nameFolder": "Nouveau dossier",
         "parentId": id
     });
     return response.data;
 }
-/*export const createNote = async (folderId: number, nameNote: string, contentNote: string): Promise<Note> => {
-    const response = await axios.post<Note>(`${API_BASE_URL}/note`, { folderId, nameNote, contentNote });
-    return response.data;
-}*/
-
-
 
 export const createNote = async (folderId: number, nameNote: string, contentNote: string): Promise<Note> => {
     const response = await axios.post<Note>(`${API_BASE_URL}/note`, {
@@ -59,14 +53,6 @@ export const createNote = async (folderId: number, nameNote: string, contentNote
     return response.data;
 };
 
-
-/*export const updateNote = async (note: Note): Promise<Note> => {
-    const response = await axios.put<Note>(`${API_BASE_URL}/note/${note.idNote}`, {
-        ...note,
-        folder: { idFolder: note.idFolder } 
-    });
-    return response.data;
-};*/
 
 export const updateNote = async (note: Note): Promise<Note> => {
     const response = await axios.put<Note>(`${API_BASE_URL}/note/${note.idNote}`, {

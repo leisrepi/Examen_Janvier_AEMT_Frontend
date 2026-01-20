@@ -6,43 +6,28 @@ import {useEffect, useState } from 'react';
 import OpenNoteComponent from './openNoteComponent';
 import SpiderImage from "../assets/Spider.png";
 import {createFolder, getFolderChildreen} from '../service/SpookyService';
-
-
-
-
 import './FolderComponent.css';
 
-//melange des types pour faire fonctionner le map
 export type Item = Folder | Note;
 
 interface Props {
     folderInfo: Folder;
 }
 
-
-
-
-
 export default function FolderComponent({folderInfo}: Props)  {
     const [childfoldersAndNotes, setChildFoldersAndNotes] = useState<Item[]>([]);
-    /*const [childfoldersAndNotes, setChildFoldersAndNotes] = useState<Item[]>([
-        { idFolder: 1, nameFolder: "Work", idParent: 0 },
-        { idFolder: 2, nameFolder: "Personal", idParent: 0 },
-        { idNote: 1, nameNote: "Meeting Notes", contentNote: "Discuss project timeline", creationDateNote: new Date(), lastModificationNote: new Date(), idFolder: 1 },
-    ]);*/
+  
 
     const [spiderLeft, setSpiderLeft] = useState<number>(0);
     const [folderOpen, setFolderOpen] = useState<boolean>(false);
     const [menuContextuel, setMenuContextuel] = useState<MenuContextuelProps | null>(null);
 
 
-    /*------------------------------UseEffect--------------------------------*/
     useEffect(() => {
         setSpiderLeft(5 + Math.random() * 100);
         console.log(spiderLeft);
     }, []);
 
-    /*------------------------------Fonction--------------------------------*/
 
     function fetchChildItems(){
         getFolderChildreen(folderInfo.idFolder).then((items : Item[]) => {
@@ -62,12 +47,10 @@ export default function FolderComponent({folderInfo}: Props)  {
     }
     
 
-    /*-------------------------------Event---------------------------------*/
-
-    const handleRightClick = (event) => {
-        event.preventDefault(); // Empêche le menu contextuel par défaut
+    const handleRightClick = (event: React.MouseEvent<HTMLHeadingElement>) => {
+        event.preventDefault(); 
         if (menuContextuel) {
-            return; // Si le menu est déjà ouvert, ne rien faire
+            return; 
         }
         
         setMenuContextuel({
@@ -82,8 +65,6 @@ export default function FolderComponent({folderInfo}: Props)  {
         });
 
     };
-
-
 
     return (
     
