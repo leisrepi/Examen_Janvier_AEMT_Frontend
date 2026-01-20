@@ -107,10 +107,10 @@ function AppContent() {
         {foldersAndNotes.map((item : Item) => {
           if ("nameFolder" in item) {
               let folder = item as Folder;
-              return <FolderComponent folderInfo={folder}/>;
+              return <FolderComponent folderInfo={folder} updateParent={fetchChildItems}/>;
           }else{
               let note = item as Note;
-              return <OpenNoteComponent note={note}  />;
+              return <OpenNoteComponent note={note} updateParent={fetchChildItems}  />;
           }
         })}
       </div>
