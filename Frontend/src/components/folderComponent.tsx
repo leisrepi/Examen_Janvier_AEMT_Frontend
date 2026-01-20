@@ -1,5 +1,7 @@
 import type { Folder } from '../types/Folder';
 import type { Note } from '../types/Note';
+import type { MenuContextuelProps } from './menuContextuelComponent';
+import MenuContextuelComponent from './menuContextuelComponent';
 import {useEffect, useState } from 'react';
 import OpenNoteComponent from './openNoteComponent';
 import SpiderImage from "../assets/Spider.png";
@@ -31,10 +33,16 @@ export default function FolderComponent({folderInfo, foldersAndNotes}: Props)  {
 
     const [spiderLeft, setSpiderLeft] = useState<number>(0);
     const [folderOpen, setFolderOpen] = useState<boolean>(false);
+    const [menuContextuel, setMenuContextuel] = useState<MenuContextuelProps | null>(null);
+
+
+    /*------------------------------UseEffect--------------------------------*/
     useEffect(() => {
         setSpiderLeft(5 + Math.random() * 100);
         console.log(spiderLeft);
     }, []);
+
+    /*------------------------------Fonction--------------------------------*/
 
     function fetchChildItems(){
         getFolderChildreen(folderInfo.idFolder).then((items : Item[]) => {
@@ -53,9 +61,47 @@ export default function FolderComponent({folderInfo, foldersAndNotes}: Props)  {
         
     }
 
+    /*-------------------------------Event---------------------------------*/
+
+    const handleRightClick = (event) => {
+        event.preventDefault(); // Empêche le menu contextuel par défaut
+        if (menuContextuel) {
+            return; // Si le menu est déjà ouvert, ne rien faire
+        }
+        
+        setMenuContextuel({
+            position: { x: event.pageX - 40, y: event.pageY - 10},
+            actions: [
+            { label: "Renommer TMP", onClick: () => console.log("Renommer") },
+            { label: "Supprimer TMP", onClick: () => console.log("Supprimer") },
+            { label: "Ajouté sous dossier", onClick: () => console.log("Propriétés") },
+            { label: "Ajouté sous dossier", onClick: () => console.log("Propriétés") },
+            ],
+            onClose: () => setMenuContextuel(null)
+        });
+
+    };
+
+
+
     return (
+    
     <div className="FolderComponent">
-        <h2 onClick={() => openFolder()} className={folderOpen ? "FolderOpen" : "FolderClosed"}>
+
+        {menuContextuel && (
+        <MenuContextuelComponent
+            position={menuContextuel.position}
+            actions={menuContextuel.actions}
+            onClose={() => setMenuContextuel(null)}
+        />
+        )}
+
+        <h2 
+            onClick={() => openFolder()} 
+            onContextMenu={handleRightClick}
+            className={folderOpen ? "FolderOpen" : "FolderClosed"}
+        >
+
             {folderOpen ? "📂" : "📁"} {folderInfo.nameFolder}
         </h2>
         <img style={{left: `${spiderLeft}px`}} src={SpiderImage} alt="Image à déplacer" className="MonsterImage" />
@@ -64,7 +110,7 @@ export default function FolderComponent({folderInfo, foldersAndNotes}: Props)  {
         {folderOpen && childfoldersAndNotes.map((item : Item) => {
                 if ("nameFolder" in item) {
                     let folder = item as Folder;
-                    return <FolderComponent folderInfo={item} foldersAndNotes={childfoldersAndNotes} />;
+                    return <FolderComponent folderInfo={folder} foldersAndNotes={childfoldersAndNotes} />;
                 }else{
                     let note = item as Note;
                     return <OpenNoteComponent note={note} />;
