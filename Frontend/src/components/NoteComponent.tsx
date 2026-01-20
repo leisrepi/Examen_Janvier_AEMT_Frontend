@@ -53,7 +53,7 @@ const NoteComponent: React.FC<NoteComponentProps> = ({ note }) => {
   };
 
   return (
-    <div style={{ display: 'flex', gap: '20px' }}>
+    <div className='OpenedNote' style={{ display: 'flex', gap: '20px' }}>
       <div style={{ flex: 1 }}>
         <h2>
           {isEditing ? (
