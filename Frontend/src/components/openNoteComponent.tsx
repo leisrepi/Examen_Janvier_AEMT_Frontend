@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect} from "react";
 import type  { Note } from "../types/Note";
 import MenuContextuelComponent from "./MenuContextuelComponent";
 import type { MenuContextuelProps } from "./MenuContextuelComponent";
 import { useContext } from "react";
 import {SpookyContext}  from "../contexts/SpookyContext";
 import {updateNote, deleteNote} from "../service/SpookyService";
+
 
 interface Props {
     note: Note;
@@ -20,6 +21,10 @@ export default function OpenNoteComponent({note, updateParent}: Props) {
   const [noteName, setNoteName] = useState<string>(note.nameNote);
 
   if (!spookyContext) return null; // Sécurité si le contexte est null
+
+  useEffect(() => {
+    setNoteName(note.nameNote);
+  }, [note.nameNote]);
 
   function renameNoteClick() {
     const newName = prompt("Entrez le nouveau nom de la note :", note.nameNote);
@@ -87,6 +92,7 @@ export default function OpenNoteComponent({note, updateParent}: Props) {
 
   const openFile = () => {
     spookyContext.setOpenedNote(note);
+    spookyContext.setUpdateNoteParentFolder(updateParent || (() => {}));
   }
 
 

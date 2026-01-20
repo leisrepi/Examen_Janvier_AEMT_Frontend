@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useEffect, useRef, useState } from 'react';
 import {
   getAllFolders,
   createFolder,
@@ -16,10 +16,14 @@ interface SpookyContextType {
   openedNote: Note | null;
   setOpenedNote: (note: Note | null) => void;
   refreshFolders: () => Promise<void>;
+  registerExplorerRefresh: (fn: () => void) => void;
+  refreshExplorer: () => void;
   addFolder: (parentId: number) => Promise<void>; 
   removeFolder: (id: number) => Promise<void>;
   addNote: (folderId: number, nameNote: string, contentNote: string) => Promise<void>;
   updateExistingNote: (note: Note) => Promise<void>;
+  setUpdateNoteParentFolder: (fn: () => void) => void;
+  updateNoteParentFolder: () => void;
   removeNote: (id: number) => Promise<void>;
 }
 
@@ -30,6 +34,26 @@ export const SpookyContext = createContext<SpookyContextType | undefined>(undefi
 export const SpookyProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [folders, setFolders] = useState<Folder[]>([]);
   const [openedNote, setOpenedNote] = useState<Note | null>(null);
+  const explorerRefreshRef = useRef<() => void>(() => {});
+
+
+  const updateNoteParentFolderRef = useRef<() => void>(() => {});
+
+  const setUpdateNoteParentFolder = (fn: () => void) => {
+    updateNoteParentFolderRef.current = fn;
+  };
+
+  const updateNoteParentFolder = () => {
+    updateNoteParentFolderRef.current();
+  };
+
+  const registerExplorerRefresh = (fn: () => void) => {
+    explorerRefreshRef.current = fn;
+  };
+
+  const refreshExplorer = () => {
+    explorerRefreshRef.current();
+  };
 
   const refreshFolders = async () => {
     try {
@@ -80,11 +104,15 @@ const addFolder = async (parentId: number) => {
         openedNote,
         setOpenedNote,
         refreshFolders,
+        registerExplorerRefresh,
+        refreshExplorer,
         addFolder,
         removeFolder,
         addNote,
         updateExistingNote,
         removeNote,
+        setUpdateNoteParentFolder,
+        updateNoteParentFolder,
       }}
     >
       {children}

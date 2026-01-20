@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import './App.css';
 import FolderComponent from './components/folderComponent';
 import NoteComponent from './components/NoteComponent';
-import { SpookyProvider, useSpooky } from './contexts/SpookyContext';
+import { SpookyContext, SpookyProvider, useSpooky } from './contexts/SpookyContext';
 import type { Item } from './service/SpookyService';
 import OpenNoteComponent from './components/openNoteComponent';
 import type { Note } from './types/Note';
@@ -17,6 +17,9 @@ function AppContent() {
   const {openedNote} = useSpooky();
   const [foldersAndNotes, setFoldersAndNotes] = useState<Item[]>([]);
   const [menuContextuel, setMenuContextuel] = useState<MenuContextuelProps | null>(null);
+
+  const spookyContext = useContext(SpookyContext);
+  if (!spookyContext) return null; // Sécurité si le contexte est null
   //TODO mettre le menu contextuel dans le contexte pour l'utiliser partout
 
   function fetchChildItems(){
@@ -75,7 +78,7 @@ function AppContent() {
       
     <div className="OpenedNote">
       {openedNote ? (
-        <NoteComponent key={openedNote.idNote} note={openedNote} />
+        <NoteComponent key={openedNote.idNote} note={openedNote} updateParent={spookyContext.updateNoteParentFolder} />
       ) : (
         <p>Aucune note ouverte</p>
       )}

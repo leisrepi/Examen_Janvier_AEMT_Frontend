@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useMemo } from "react";
+import React, { useState, useEffect, useRef, useMemo, useContext } from "react";
 import { 
   MDXEditor, 
   headingsPlugin, 
@@ -18,18 +18,22 @@ import {
 } from "@mdxeditor/editor";
 
 import "@mdxeditor/editor/style.css";
-import { useSpooky } from "../contexts/SpookyContext";
+import { SpookyContext, useSpooky } from "../contexts/SpookyContext";
 import type { Note } from "../types/Note";
 import "./Markdown.css"; 
 
 interface NoteComponentProps {
   note: Note;
+  updateParent? : () => void;
 }
 
-const NoteComponent: React.FC<NoteComponentProps> = ({ note }) => {
+const NoteComponent: React.FC<NoteComponentProps> = ({ note, updateParent }) => {
   const { updateExistingNote, removeNote } = useSpooky();
   const [title, setTitle] = useState(note.nameNote);
   const editorRef = useRef<MDXEditorMethods>(null);
+
+  const spookyContext = useContext(SpookyContext);
+  if (!spookyContext) return null; // Sécurité si le contexte est null
   
   // Contenu actuel (pour la sauvegarde)
   const [currentContent, setCurrentContent] = useState(note.contentNote || "");
@@ -38,6 +42,17 @@ const NoteComponent: React.FC<NoteComponentProps> = ({ note }) => {
   const [metadata, setMetadata] = useState({
     sizeBytes: 0, wordCount: 0, charCount: 0, lineCount: 0,
   });
+
+  //mise a jour du parent quand la note change
+  function updateNoteParent() {
+    if (updateParent) {
+      updateParent();
+    }
+  }
+
+  useEffect(() => {
+    updateNoteParent();
+  }, [note]);
 
   // Initialisation
   useEffect(() => {
@@ -84,6 +99,7 @@ const NoteComponent: React.FC<NoteComponentProps> = ({ note }) => {
     };
     await updateExistingNote(updatedNote);
     alert("Note sauvegardée ! 🎃");
+    updateNoteParent();
     setIsEditing(false);
   };
 
