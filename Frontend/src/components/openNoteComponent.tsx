@@ -8,7 +8,7 @@ import {updateNote, deleteNote} from "../service/SpookyService";
 
 interface Props {
     note: Note;
-    updateParent : () => void;
+    updateParent? : () => void;
 }
 
 
@@ -38,7 +38,10 @@ export default function OpenNoteComponent({note, updateParent}: Props) {
             console.log(updatedNote);
             note.nameNote = updatedNote.nameNote;
             setNoteName(updatedNote.nameNote);
-            updateParent();
+            if (updateParent){
+              updateParent();
+            }
+            
           });
     }
   }
@@ -54,7 +57,9 @@ export default function OpenNoteComponent({note, updateParent}: Props) {
     deleteNote(note.idNote).then(() => {
         // Retirer la note de l'état global ou du contexte
         alert("Note supprimée avec succès.");
-        updateParent();
+        if (updateParent){
+          updateParent();
+        }
     });
   }
   

@@ -17,13 +17,14 @@ export type Item = Folder | Note;
 
 interface Props {
     folderInfo: Folder;
+    updateParent?: () => void;
 }
 
 
 
 
 
-export default function FolderComponent({folderInfo}: Props)  {
+export default function FolderComponent({folderInfo, updateParent}: Props)  {
     const [childfoldersAndNotes, setChildFoldersAndNotes] = useState<Item[]>([]);
     const [folderName, setFolderName] = useState<string>(folderInfo.nameFolder);
     /*const [childfoldersAndNotes, setChildFoldersAndNotes] = useState<Item[]>([
@@ -65,8 +66,12 @@ export default function FolderComponent({folderInfo}: Props)  {
         if (!confirm("Voulez-vous vraiment supprimer ce dossier ?")) {
             return; //refuser on quitte la fonction   
         }
-        await deleteFolder(folderInfo.idFolder);
-        fetchChildItems();
+        await deleteFolder(folderInfo.idFolder).then(() => {
+            if (updateParent) {
+                updateParent();
+            }
+        });
+        
     }
 
     function renameFolderClick(){
@@ -132,7 +137,7 @@ export default function FolderComponent({folderInfo}: Props)  {
         {folderOpen && childfoldersAndNotes.map((item : Item) => {
                 if ("nameFolder" in item) {
                     let folder = item as Folder;
-                    return <FolderComponent folderInfo={folder} />;
+                    return <FolderComponent folderInfo={folder} updateParent={fetchChildItems} />;
                 }else{
                     let note = item as Note;
                     return <OpenNoteComponent note={note} updateParent={fetchChildItems} />;

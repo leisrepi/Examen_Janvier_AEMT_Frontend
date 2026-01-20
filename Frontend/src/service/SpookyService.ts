@@ -54,7 +54,7 @@ export const getFolderChildreen = async (folderId: number): Promise<Item[]> => {
     let listFolder = response.data.SousDossier as Folder[];
     return [...listNote, ...listFolder];
 }
-export const createFolder = async (id : number): Promise<Folder> => {
+export const createFolder = async (id : number|null): Promise<Folder> => {
     const response = await axios.post<Folder>(`${API_BASE_URL}/folder`, {
         "nameFolder": "",
         "parentId": id
@@ -68,7 +68,7 @@ export const createFolder = async (id : number): Promise<Folder> => {
 
 
 
-export const createNote = async (folderId: number, nameNote: string, contentNote: string): Promise<Note> => {
+export const createNote = async (folderId: number | null, nameNote: string, contentNote: string): Promise<Note> => {
     const response = await axios.post<Note>(`${API_BASE_URL}/note`, {
         name: nameNote,      
         content: contentNote,
@@ -99,7 +99,13 @@ export const deleteNote = async (noteId: number): Promise<void> => {
     await axios.delete(`${API_BASE_URL}/note/${noteId}`);
 }
 export const deleteFolder = async (folderId: number): Promise<void> => {
+    try {
     await axios.delete(`${API_BASE_URL}/folder/${folderId}`);
+
+    } catch (error: any) {
+    console.error("Erreur Axios :", error.response);
+    }
 }
+    
 
 
