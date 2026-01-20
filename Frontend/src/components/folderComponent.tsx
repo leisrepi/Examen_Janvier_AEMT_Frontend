@@ -5,7 +5,11 @@ import MenuContextuelComponent from './MenuContextuelComponent';
 import {useEffect, useState } from 'react';
 import OpenNoteComponent from './openNoteComponent';
 import SpiderImage from "../assets/Spider.png";
-import {createFolder, getFolderChildreen} from '../service/SpookyService';
+import {createFolder, getFolderChildreen, deleteFolder, updateFolderName, createNote} from '../service/SpookyService';
+
+
+
+
 import './FolderComponent.css';
 
 export type Item = Folder | Note;
@@ -14,9 +18,18 @@ interface Props {
     folderInfo: Folder;
 }
 
-export default function FolderComponent({folderInfo}: Props)  {
+
+
+
+
+export default function FolderComponent({folderInfo, updateParent}: Props)  {
     const [childfoldersAndNotes, setChildFoldersAndNotes] = useState<Item[]>([]);
-  
+    const [folderName, setFolderName] = useState<string>(folderInfo.nameFolder);
+    /*const [childfoldersAndNotes, setChildFoldersAndNotes] = useState<Item[]>([
+        { idFolder: 1, nameFolder: "Work", idParent: 0 },
+        { idFolder: 2, nameFolder: "Personal", idParent: 0 },
+        { idNote: 1, nameNote: "Meeting Notes", contentNote: "Discuss project timeline", creationDateNote: new Date(), lastModificationNote: new Date(), idFolder: 1 },
+    ]);*/
 
     const [spiderLeft, setSpiderLeft] = useState<number>(0);
     const [folderOpen, setFolderOpen] = useState<boolean>(false);
@@ -25,6 +38,7 @@ export default function FolderComponent({folderInfo}: Props)  {
 
     useEffect(() => {
         setSpiderLeft(5 + Math.random() * 100);
+        setFolderName(folderInfo.nameFolder);
         console.log(spiderLeft);
     }, []);
 
@@ -45,10 +59,36 @@ export default function FolderComponent({folderInfo}: Props)  {
         
         
     }
-    
+    async function deleteFolderClick(){  
+        if (!confirm("Voulez-vous vraiment supprimer ce dossier ?")) {
+            return; //refuser on quitte la fonction   
+        }
+        await deleteFolder(folderInfo.idFolder).then(() => {
+            if (updateParent) {
+                updateParent();
+            }
+        });
+        
+    }
 
-    const handleRightClick = (event: React.MouseEvent<HTMLHeadingElement>) => {
-        event.preventDefault(); 
+    function renameFolderClick(){
+        const info = prompt("Veuillez entrer un nouveau nom :");
+        if (info) {
+            console.log("Nom saisi :", info);
+            setFolderName(info);
+            folderInfo.nameFolder = info;
+            //Appel service pour renommer le dossier
+            updateFolderName(folderInfo).then(() => fetchChildItems());
+        } else {
+            console.log("Aucune info saisie");
+        }
+        console.log("Renommer dossier");
+    }
+
+    /*-------------------------------Event---------------------------------*/
+
+    const handleRightClick = (event) => {
+        event.preventDefault(); // Empêche le menu contextuel par défaut
         if (menuContextuel) {
             return; 
         }
@@ -56,10 +96,10 @@ export default function FolderComponent({folderInfo}: Props)  {
         setMenuContextuel({
             position: { x: event.pageX - 10, y: event.pageY - 10},
             actions: [
-            { label: "Renommer TMP", onClick: () => console.log("Renommer") },
-            { label: "Supprimer TMP", onClick: () => console.log("Supprimer") },
+            { label: "Renommer", onClick: () => renameFolderClick() },
+            { label: "Supprimer", onClick: () => deleteFolderClick() },
             { label: "Ajouté sous dossier", onClick: () => createFolder(folderInfo.idFolder).then(() => fetchChildItems()) },
-            { label: "Ajouté note", onClick: () => console.log("Propriétés") },
+            { label: "Ajouté note", onClick: () => createNote(folderInfo.idFolder, "", "").then(() => fetchChildItems()) },
             ],
             onClose: () => setMenuContextuel(null)
         });
@@ -92,10 +132,10 @@ export default function FolderComponent({folderInfo}: Props)  {
         {folderOpen && childfoldersAndNotes.map((item : Item) => {
                 if ("nameFolder" in item) {
                     let folder = item as Folder;
-                    return <FolderComponent folderInfo={folder} />;
+                    return <FolderComponent folderInfo={folder} updateParent={fetchChildItems} />;
                 }else{
                     let note = item as Note;
-                    return <OpenNoteComponent note={note} />;
+                    return <OpenNoteComponent note={note} updateParent={fetchChildItems} />;
                 }
             }
         )}
