@@ -5,7 +5,7 @@ import MenuContextuelComponent from './MenuContextuelComponent';
 import {useEffect, useState } from 'react';
 import OpenNoteComponent from './openNoteComponent';
 import SpiderImage from "../assets/Spider.png";
-import {createFolder, getFolderChildreen, deleteFolder, updateFolderName} from '../service/SpookyService';
+import {createFolder, getFolderChildreen, deleteFolder, updateFolderName, createNote} from '../service/SpookyService';
 
 
 
@@ -94,10 +94,10 @@ export default function FolderComponent({folderInfo}: Props)  {
         setMenuContextuel({
             position: { x: event.pageX - 10, y: event.pageY - 10},
             actions: [
-            { label: "Renommer TMP", onClick: () => renameFolderClick() },
+            { label: "Renommer", onClick: () => renameFolderClick() },
             { label: "Supprimer", onClick: () => deleteFolderClick() },
             { label: "Ajouté sous dossier", onClick: () => createFolder(folderInfo.idFolder).then(() => fetchChildItems()) },
-            { label: "Ajouté note", onClick: () => console.log("Propriétés") },
+            { label: "Ajouté note", onClick: () => createNote(folderInfo.idFolder, "", "").then(() => fetchChildItems()) },
             ],
             onClose: () => setMenuContextuel(null)
         });
@@ -135,7 +135,7 @@ export default function FolderComponent({folderInfo}: Props)  {
                     return <FolderComponent folderInfo={folder} />;
                 }else{
                     let note = item as Note;
-                    return <OpenNoteComponent note={note} />;
+                    return <OpenNoteComponent note={note} updateParent={fetchChildItems} />;
                 }
             }
         )}
