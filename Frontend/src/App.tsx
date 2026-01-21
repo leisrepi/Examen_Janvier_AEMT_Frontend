@@ -45,7 +45,7 @@ function AppContent() {
       position: { x: event.pageX - 10, y: event.pageY - 10},
       actions: [
         { label: "Ajouté sous dossier", onClick: () => createFolder(null).then(() => fetchChildItems()) },
-        { label: "Ajouté note", onClick: () => alert("A modifier : en attende du backend, code deja écris et en commantaire sur la meme ligne que cette alert") /*createNote(0 , "", "").then(() => fetchChildItems())*/ },
+        { label: "Ajouté note", onClick: () => createNote(null , "", "").then(() => fetchChildItems()) },
       ],
       onClose: () => setMenuContextuel(null)
     });
