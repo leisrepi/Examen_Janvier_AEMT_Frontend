@@ -80,6 +80,10 @@ export default function FolderComponent({folderInfo, updateParent}: Props)  {
         const info = prompt("Veuillez entrer un nouveau nom :");
         if (info) {
             console.log("Nom saisi :", info);
+            if (!info.trim()) {
+                console.log("Nom vide après trim, opération annulée.");
+                return;
+            }
             setFolderName(info);
             folderInfo.nameFolder = info;
             //Appel service pour renommer le dossier
