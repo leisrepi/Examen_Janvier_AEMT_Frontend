@@ -1,4 +1,4 @@
-import { useState, useEffect} from "react";
+import { useState, useEffect, use} from "react";
 import type  { Note } from "../types/Note";
 import MenuContextuelComponent from "./MenuContextuelComponent";
 import type { MenuContextuelProps } from "./MenuContextuelComponent";
@@ -27,6 +27,12 @@ export default function OpenNoteComponent({note, updateParent}: Props) {
   useEffect(() => {
     setNoteName(note.nameNote);
   }, [note.nameNote]);
+
+  useEffect(() => {
+    if (spookyContext.openedNote?.idNote === note.idNote) {
+      spookyContext.setUpdateNoteParentFolder(updateParent || (() => {}));
+    }
+  }, []);
 
   function renameNoteClick() {
     const newName = prompt("Entrez le nouveau nom de la note :", note.nameNote);
