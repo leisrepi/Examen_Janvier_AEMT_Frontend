@@ -105,8 +105,8 @@ const NoteComponent: React.FC<NoteComponentProps> = ({ note, updateParent }) => 
   };
 
   return (
-    <div className="noteDiv"style={{ padding: "10px", border: "1px solid #ccc", backgroundColor: "#fff" }}>
-      <h2>📓 {isEditing ? "Mode Écriture" : "Mode Lecture"}</h2>
+    <div className="noteDiv">
+      <h2 style={{ textAlign: "center", margin: "0px"}}>📓 {isEditing ? "Mode Écriture" : "Mode Lecture"}</h2>
 
       <input className="nameZone"
         value={title}
@@ -116,13 +116,7 @@ const NoteComponent: React.FC<NoteComponentProps> = ({ note, updateParent }) => 
         style={{ width: "100%", marginBottom: "10px", padding: "5px", fontSize: "1.2em" }}
       />
 
-      <div className="markdown-body" style={{ 
-          backgroundColor: "#fff", 
-          padding: "10px", 
-          minHeight: "400px", 
-          border: isEditing ? "2px solid #ba4400" : "none",
-          borderRadius: "8px"
-      }}>
+      <div className="markdown-body">
         <MDXEditor
           ref={editorRef}
           markdown={currentContent} // Valeur initiale
@@ -152,7 +146,7 @@ const NoteComponent: React.FC<NoteComponentProps> = ({ note, updateParent }) => 
         />
       </div>
 
-      <div style={{ marginTop: "10px", display: "flex", gap: "10px" }}>
+      <div style={{ marginTop: "10px", display: "flex", gap: "10px", justifyContent: "center" }}>
         <button onClick={() => setIsEditing(!isEditing)}>
           {isEditing ? "👁️ Mode Lecture" : "✏️ Mode Écriture"}
         </button>

@@ -102,8 +102,8 @@ export default function FolderComponent({folderInfo, updateParent}: Props)  {
             actions: [
             { label: "Renommer", onClick: () => renameFolderClick() },
             { label: "Supprimer", onClick: () => deleteFolderClick() },
-            { label: "Ajouté sous dossier", onClick: () => createFolder(folderInfo.idFolder).then(() => fetchChildItems()) },
-            { label: "Ajouté note", onClick: () => createNote(folderInfo.idFolder, "", "").then(() => fetchChildItems()) },
+            { label: "Ajouter sous dossier", onClick: () => createFolder(folderInfo.idFolder).then(() => fetchChildItems()) },
+            { label: "Ajouter note", onClick: () => createNote(folderInfo.idFolder, "", "").then(() => fetchChildItems()) },
             ],
             onClose: () => setMenuContextuel(null)
         });
