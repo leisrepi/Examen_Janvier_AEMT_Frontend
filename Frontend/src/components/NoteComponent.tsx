@@ -91,6 +91,15 @@ const NoteComponent: React.FC<NoteComponentProps> = ({ note, updateParent }) => 
     };
   }, []);
 
+  // fonction de sauvegarde automatique à chaque changement de contenu
+  
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      handleSave();
+    }, 2000); 
+    return () => clearTimeout(timeoutId); 
+  }, [currentContent, title]);
+
   const handleSave = async () => {
     const updatedNote: Note = {
       ...note,
@@ -99,9 +108,7 @@ const NoteComponent: React.FC<NoteComponentProps> = ({ note, updateParent }) => 
       lastModificationNote: new Date(),
     };
     await updateExistingNote(updatedNote);
-    alert("Note sauvegardée ! 🎃");
     updateNoteParent();
-    setIsEditing(false);
   };
 
   return (
