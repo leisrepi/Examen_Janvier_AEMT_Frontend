@@ -67,7 +67,7 @@ function AppContent() {
 
       {/* Barre latérale */}
       <div className="ExplorerDiv">
-        <h2 className='explorateurTitle'>Explorateur</h2>
+        <h2 className='explorateurTitle' onContextMenu={handleRightClickExplorerDiv}>Explorateur</h2>
         
         <div className="explorerContent">
           {foldersAndNotes.map((item : Item) => {
@@ -92,7 +92,6 @@ function AppContent() {
       )}
     </div>
     </div>
-    </>
   );
 }
 
