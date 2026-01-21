@@ -85,9 +85,11 @@ export const updateNote = async (note: Note): Promise<Note> => {
 };
 //TODO appeler sela pour renommer une note
 
-export const updateFolderName = async (folder: Folder): Promise<Folder> => {
+export const updateFolder = async (folder: Folder): Promise<Folder> => {
     const response = await axios.put<Folder>(`${API_BASE_URL}/folder/${folder.idFolder}`, {
         "name": folder.nameFolder,
+        "idParent": folder.idParent,
+        "toBin" : folder.toBin
     });
     return response.data;
 };
