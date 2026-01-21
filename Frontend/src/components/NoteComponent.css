@@ -118,7 +118,7 @@
 } 
 
 .mdxeditor-root-contenteditable{
-  padding: 5px; 
+  /* padding: 5px;  */
 }
 
 
@@ -127,7 +127,7 @@
 .spooky-editor-content {
   width: 100%;
   box-sizing: border-box;
-  padding: 10px;
+  /* padding: 10px; */
   font-size: 1.1rem;
   border: 2px solid orangered;
   border-radius: 8px;
