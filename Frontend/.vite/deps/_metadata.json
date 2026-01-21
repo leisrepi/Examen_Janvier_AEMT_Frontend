@@ -2,46 +2,64 @@
   "hash": "0ff4da34",
   "configHash": "16dda141",
   "lockfileHash": "3a77afee",
-  "browserHash": "8a3e5b48",
+  "browserHash": "df13efb4",
   "optimized": {
     "react/jsx-dev-runtime": {
       "src": "../../node_modules/react/jsx-dev-runtime.js",
       "file": "react_jsx-dev-runtime.js",
-      "fileHash": "312cc376",
+      "fileHash": "7a5ed7a2",
       "needsInterop": true
     },
     "react": {
       "src": "../../node_modules/react/index.js",
       "file": "react.js",
-      "fileHash": "741e4047",
+      "fileHash": "17580d6f",
       "needsInterop": true
     },
     "react-dom/client": {
       "src": "../../node_modules/react-dom/client.js",
       "file": "react-dom_client.js",
-      "fileHash": "0754664f",
+      "fileHash": "a4cae51f",
       "needsInterop": true
     },
     "react-dom": {
       "src": "../../node_modules/react-dom/index.js",
       "file": "react-dom.js",
-      "fileHash": "eebde873",
+      "fileHash": "2a7cf902",
       "needsInterop": true
     },
     "axios": {
       "src": "../../node_modules/axios/index.js",
       "file": "axios.js",
-      "fileHash": "14631971",
+      "fileHash": "46502f66",
       "needsInterop": false
     },
     "@mdxeditor/editor": {
       "src": "../../node_modules/@mdxeditor/editor/dist/index.js",
       "file": "@mdxeditor_editor.js",
-      "fileHash": "51e33fd6",
+      "fileHash": "a59cc9f0",
+      "needsInterop": false
+    },
+    "react-router-dom": {
+      "src": "../../../node_modules/react-router-dom/dist/index.mjs",
+      "file": "react-router-dom.js",
+      "fileHash": "67bfc3d6",
+      "needsInterop": false
+    },
+    "react-router": {
+      "src": "../../../node_modules/react-router/dist/development/index.mjs",
+      "file": "react-router.js",
+      "fileHash": "6fa34028",
       "needsInterop": false
     }
   },
   "chunks": {
+    "xquery-N4NCL3WP": {
+      "file": "xquery-N4NCL3WP.js"
+    },
+    "yacas-J52CZIFO": {
+      "file": "yacas-J52CZIFO.js"
+    },
     "z80-CSA2FP63": {
       "file": "z80-CSA2FP63.js"
     },
@@ -53,6 +71,12 @@
     },
     "dist-3LJWCIKT": {
       "file": "dist-3LJWCIKT.js"
+    },
+    "ttcn-4NT5RLD4": {
+      "file": "ttcn-4NT5RLD4.js"
+    },
+    "ttcn-cfg-XUMXJ53U": {
+      "file": "ttcn-cfg-XUMXJ53U.js"
     },
     "turtle-H2ONLETF": {
       "file": "turtle-H2ONLETF.js"
@@ -72,11 +96,11 @@
     "vhdl-MDYGKKXI": {
       "file": "vhdl-MDYGKKXI.js"
     },
-    "xquery-N4NCL3WP": {
-      "file": "xquery-N4NCL3WP.js"
+    "stex-SYZEFCDL": {
+      "file": "stex-SYZEFCDL.js"
     },
-    "yacas-J52CZIFO": {
-      "file": "yacas-J52CZIFO.js"
+    "verilog-3SSAN6JX": {
+      "file": "verilog-3SSAN6JX.js"
     },
     "tcl-HQIJJIES": {
       "file": "tcl-HQIJJIES.js"
@@ -96,11 +120,11 @@
     "troff-2PRTLRLM": {
       "file": "troff-2PRTLRLM.js"
     },
-    "ttcn-4NT5RLD4": {
-      "file": "ttcn-4NT5RLD4.js"
+    "shell-JR76ATYA": {
+      "file": "shell-JR76ATYA.js"
     },
-    "ttcn-cfg-XUMXJ53U": {
-      "file": "ttcn-cfg-XUMXJ53U.js"
+    "sieve-5NMV45V3": {
+      "file": "sieve-5NMV45V3.js"
     },
     "smalltalk-PM7HUEHO": {
       "file": "smalltalk-PM7HUEHO.js"
@@ -120,11 +144,11 @@
     "swift-OEWQWY6V": {
       "file": "swift-OEWQWY6V.js"
     },
-    "stex-SYZEFCDL": {
-      "file": "stex-SYZEFCDL.js"
+    "pug-ZYWGAVEC": {
+      "file": "pug-ZYWGAVEC.js"
     },
-    "verilog-3SSAN6JX": {
-      "file": "verilog-3SSAN6JX.js"
+    "puppet-COIQBB7Z": {
+      "file": "puppet-COIQBB7Z.js"
     },
     "q-UYMPN2G4": {
       "file": "q-UYMPN2G4.js"
@@ -144,11 +168,11 @@
     "scheme-JE6YDEMJ": {
       "file": "scheme-JE6YDEMJ.js"
     },
-    "shell-JR76ATYA": {
-      "file": "shell-JR76ATYA.js"
+    "octave-AXDNW6ZN": {
+      "file": "octave-AXDNW6ZN.js"
     },
-    "sieve-5NMV45V3": {
-      "file": "sieve-5NMV45V3.js"
+    "oz-KHD6B7P4": {
+      "file": "oz-KHD6B7P4.js"
     },
     "pascal-BVRC4EKR": {
       "file": "pascal-BVRC4EKR.js"
@@ -168,11 +192,11 @@
     "protobuf-DMARVGZY": {
       "file": "protobuf-DMARVGZY.js"
     },
-    "pug-ZYWGAVEC": {
-      "file": "pug-ZYWGAVEC.js"
+    "mirc-HITAOTSR": {
+      "file": "mirc-HITAOTSR.js"
     },
-    "puppet-COIQBB7Z": {
-      "file": "puppet-COIQBB7Z.js"
+    "mathematica-223LJCJ2": {
+      "file": "mathematica-223LJCJ2.js"
     },
     "modelica-7BTN7A6W": {
       "file": "modelica-7BTN7A6W.js"
@@ -192,11 +216,11 @@
     "ntriples-2RPZ5DFE": {
       "file": "ntriples-2RPZ5DFE.js"
     },
-    "octave-AXDNW6ZN": {
-      "file": "octave-AXDNW6ZN.js"
+    "haskell-LZKQ274T": {
+      "file": "haskell-LZKQ274T.js"
     },
-    "oz-KHD6B7P4": {
-      "file": "oz-KHD6B7P4.js"
+    "haxe-42YEDH4N": {
+      "file": "haxe-42YEDH4N.js"
     },
     "http-5MTB4MYZ": {
       "file": "http-5MTB4MYZ.js"
@@ -219,11 +243,11 @@
     "lua-ANDNUFGU": {
       "file": "lua-ANDNUFGU.js"
     },
-    "mirc-HITAOTSR": {
-      "file": "mirc-HITAOTSR.js"
+    "factor-HJZBK24Z": {
+      "file": "factor-HJZBK24Z.js"
     },
-    "mathematica-223LJCJ2": {
-      "file": "mathematica-223LJCJ2.js"
+    "fcl-2BSGS6PE": {
+      "file": "fcl-2BSGS6PE.js"
     },
     "forth-AYH5JNTE": {
       "file": "forth-AYH5JNTE.js"
@@ -243,11 +267,11 @@
     "groovy-FL2XLCX3": {
       "file": "groovy-FL2XLCX3.js"
     },
-    "haskell-LZKQ274T": {
-      "file": "haskell-LZKQ274T.js"
+    "dtd-WFRB4VWS": {
+      "file": "dtd-WFRB4VWS.js"
     },
-    "haxe-42YEDH4N": {
-      "file": "haxe-42YEDH4N.js"
+    "dylan-4MVFSXF5": {
+      "file": "dylan-4MVFSXF5.js"
     },
     "ebnf-EWOEHVBF": {
       "file": "ebnf-EWOEHVBF.js"
@@ -267,11 +291,11 @@
     "sql-QGJDDZ4Q": {
       "file": "sql-QGJDDZ4Q.js"
     },
-    "factor-HJZBK24Z": {
-      "file": "factor-HJZBK24Z.js"
+    "coffeescript-QEKLUL22": {
+      "file": "coffeescript-QEKLUL22.js"
     },
-    "fcl-2BSGS6PE": {
-      "file": "fcl-2BSGS6PE.js"
+    "commonlisp-2TID7KM5": {
+      "file": "commonlisp-2TID7KM5.js"
     },
     "cypher-G54UHUHA": {
       "file": "cypher-G54UHUHA.js"
@@ -294,11 +318,11 @@
     "chunk-OTFBFVER": {
       "file": "chunk-OTFBFVER.js"
     },
-    "dtd-WFRB4VWS": {
-      "file": "dtd-WFRB4VWS.js"
+    "asn1-ZQUXDEQQ": {
+      "file": "asn1-ZQUXDEQQ.js"
     },
-    "dylan-4MVFSXF5": {
-      "file": "dylan-4MVFSXF5.js"
+    "asterisk-7Y2N37MM": {
+      "file": "asterisk-7Y2N37MM.js"
     },
     "brainfuck-RCU72CN4": {
       "file": "brainfuck-RCU72CN4.js"
@@ -318,11 +342,11 @@
     "cmake-4BPWML36": {
       "file": "cmake-4BPWML36.js"
     },
-    "coffeescript-QEKLUL22": {
-      "file": "coffeescript-QEKLUL22.js"
+    "dist-GGU76MZ6": {
+      "file": "dist-GGU76MZ6.js"
     },
-    "commonlisp-2TID7KM5": {
-      "file": "commonlisp-2TID7KM5.js"
+    "dist-J7UXCOTV": {
+      "file": "dist-J7UXCOTV.js"
     },
     "dist-32Z4WLBF": {
       "file": "dist-32Z4WLBF.js"
@@ -342,11 +366,11 @@
     "asciiarmor-EDU3MXO3": {
       "file": "asciiarmor-EDU3MXO3.js"
     },
-    "asn1-ZQUXDEQQ": {
-      "file": "asn1-ZQUXDEQQ.js"
+    "dist-RC3GTARB": {
+      "file": "dist-RC3GTARB.js"
     },
-    "asterisk-7Y2N37MM": {
-      "file": "asterisk-7Y2N37MM.js"
+    "dist-33YWP2NQ": {
+      "file": "dist-33YWP2NQ.js"
     },
     "dist-BFJUOOEN": {
       "file": "dist-BFJUOOEN.js"
@@ -366,14 +390,20 @@
     "dist-O2OA3RT7": {
       "file": "dist-O2OA3RT7.js"
     },
-    "dist-GGU76MZ6": {
-      "file": "dist-GGU76MZ6.js"
+    "node-GIZRYMFP": {
+      "file": "node-GIZRYMFP.js"
     },
-    "dist-J7UXCOTV": {
-      "file": "dist-J7UXCOTV.js"
+    "index-599aeaf7-7527VDNT": {
+      "file": "index-599aeaf7-7527VDNT.js"
+    },
+    "chunk-ZN46FTY2": {
+      "file": "chunk-ZN46FTY2.js"
     },
     "runtime-6DTYAP7U": {
       "file": "runtime-6DTYAP7U.js"
+    },
+    "chunk-D3QUSRTL": {
+      "file": "chunk-D3QUSRTL.js"
     },
     "dist-D6YME3KV": {
       "file": "dist-D6YME3KV.js"
@@ -390,14 +420,14 @@
     "dist-YIR6NGSZ": {
       "file": "dist-YIR6NGSZ.js"
     },
-    "dist-RC3GTARB": {
-      "file": "dist-RC3GTARB.js"
-    },
-    "dist-33YWP2NQ": {
-      "file": "dist-33YWP2NQ.js"
+    "chunk-APFYVLP7": {
+      "file": "chunk-APFYVLP7.js"
     },
     "chunk-KWMR37KL": {
       "file": "chunk-KWMR37KL.js"
+    },
+    "chunk-Z3SMBXMB": {
+      "file": "chunk-Z3SMBXMB.js"
     },
     "chunk-E7TVZPKY": {
       "file": "chunk-E7TVZPKY.js"
@@ -419,21 +449,6 @@
     },
     "chunk-P6RTVJOB": {
       "file": "chunk-P6RTVJOB.js"
-    },
-    "node-GIZRYMFP": {
-      "file": "node-GIZRYMFP.js"
-    },
-    "index-599aeaf7-7527VDNT": {
-      "file": "index-599aeaf7-7527VDNT.js"
-    },
-    "chunk-ZN46FTY2": {
-      "file": "chunk-ZN46FTY2.js"
-    },
-    "chunk-D3QUSRTL": {
-      "file": "chunk-D3QUSRTL.js"
-    },
-    "chunk-Z3SMBXMB": {
-      "file": "chunk-Z3SMBXMB.js"
     },
     "chunk-G3PMV62Z": {
       "file": "chunk-G3PMV62Z.js"

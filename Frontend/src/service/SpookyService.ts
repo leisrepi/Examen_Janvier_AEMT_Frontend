@@ -106,6 +106,22 @@ export const deleteFolder = async (folderId: number): Promise<void> => {
     console.error("Erreur Axios :", error.response);
     }
 }
-    
 
+export const getBinItems = async (): Promise<Item[]> => {
+    const response = await axios.get(`${API_BASE_URL}/bin`);
+    console.log('Fetched bin items:', response.data);
 
+    let listNote = response.data.orphanNotes as Note[];
+    let listFolder = response.data.folders as Folder[];
+    if (!listNote) {
+        listNote = [];
+    }
+    if (!listFolder) {
+        listFolder = [];
+    }
+    const finalItems: Item[] = listFolder;
+    for (const note of listNote) {
+        finalItems.push(note);
+    }
+    return finalItems;
+}
