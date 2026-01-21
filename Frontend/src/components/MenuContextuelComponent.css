@@ -1,0 +1,27 @@
+div.MenuContextuelComponent {
+    margin: 0 0 0 0px;
+    padding: 0;
+    z-index: 1000;
+    position: fixed;
+    background-color: white;
+    border: 2px solid black;
+    border-radius: 10px;
+}
+
+div.MenuContextuelComponent ul {
+    padding: 5px 5px;
+    cursor: pointer;
+    list-style-type: none;
+    margin: 0;
+}
+
+div.MenuContextuelComponent li {
+    border: none;
+    border-radius: 5px;
+    transition: 200ms;
+    padding: 5px;
+}
+
+div.MenuContextuelComponent li:hover {
+    background-color: orangered;
+}

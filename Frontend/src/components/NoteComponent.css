@@ -1,0 +1,99 @@
+
+.noteDiv {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  max-height: 70vh;
+  padding: 10px;
+  margin: 20px auto;
+  max-width: calc(100vw - 400px - 40px - 50px);
+  background: #fff;
+  border: 4px solid orangered;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+  font-family: 'Creepster', cursive;
+  color: #222;
+  overflow: hidden;
+  background-image: url('../assets/background_night.png');
+}
+
+/* Titre */
+.noteDiv h2 {
+  font-size: 2rem;
+  color: orangered;
+  text-shadow: 2px 2px 4px black;
+  margin-bottom: 10px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+/* Input titre */
+
+.noteDiv input,
+.noteDiv textarea {
+  width: 100%;
+  box-sizing: border-box; /* Empêche le débordement */
+  padding: 10px;
+  font-size: 1.1rem;
+  border: 2px solid orangered;
+  border-radius: 8px;
+  background-color: #333;
+  color: #fff; /* Ajout pour contraste */
+  font-family: 'Roboto Mono', monospace;
+}
+
+/* Ajustement spécifique pour textarea */
+.noteDiv textarea {
+  flex: 2; /* Plus d'espace pour la zone d'édition */
+  resize: none;
+  margin-bottom: 10px;
+}
+
+
+/* Boutons */
+.noteDiv > div:nth-of-type(1) {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  flex-shrink: 0;
+}
+
+.noteDiv button {
+  background-color: #333;
+  color: white;
+  border: 2px solid orangered;
+  border-radius: 8px;
+  padding: 10px 15px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.noteDiv button:hover {
+  background-color: orangered;
+  color: #000;
+  transform: scale(1.05);
+}
+
+/* Métadonnées compactes */
+.noteDiv > div:last-child {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2 colonnes */
+  gap: 5px 15px;
+  border-radius: 8px;
+  padding: 8px;
+  font-size: 0.8rem; /* Plus petit */
+  color: white;
+  flex-shrink: 0;
+}
+
+
+.noteDiv > div:last-child p {
+  margin: 2px 0;
+  color: #fff; /* ✅ Forcer le blanc pour chaque ligne */
+}
+
+.noteDiv > div:last-child strong {
+  color: #ff6600; /* ✅ Orange pour les titres (Taille, Mots, etc.) */
+}

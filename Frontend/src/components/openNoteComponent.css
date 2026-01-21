@@ -1,0 +1,12 @@
+.parchmentPic {
+     width: 25px;
+     height: 30px;
+     margin-right: 5px;
+ }
+
+h4 {
+    display: flex;
+    align-items: center;
+    /* justify-content: center; */
+    /* cursor: pointer; */
+}
