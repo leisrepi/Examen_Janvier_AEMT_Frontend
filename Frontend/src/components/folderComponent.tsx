@@ -107,8 +107,8 @@ export default function FolderComponent({folderInfo, updateParent}: Props)  {
             actions: [
             { label: "Renommer", onClick: () => renameFolderClick() },
             { label: "Supprimer", onClick: () => deleteFolderClick() },
-            { label: "Ajouté sous dossier", onClick: () => createFolder(folderInfo.idFolder).then(() => fetchChildItems()) },
-            { label: "Ajouté note", onClick: () => createNote(folderInfo.idFolder, "", "").then(() => fetchChildItems()) },
+            { label: "Ajouter sous dossier", onClick: () => createFolder(folderInfo.idFolder).then(() => fetchChildItems()) },
+            { label: "Ajouter note", onClick: () => createNote(folderInfo.idFolder, "", "").then(() => fetchChildItems()) },
             ],
             onClose: () => setMenuContextuel(null)
         });
@@ -133,10 +133,11 @@ export default function FolderComponent({folderInfo, updateParent}: Props)  {
             className={folderOpen ? "FolderOpen" : "FolderClosed"}
         >
 
-            {/* {folderOpen ? "📂" : "📁"} {folderInfo.nameFolder} */}
             {folderOpen
             ? <img className="coffinPic" src={coffinOpened} alt="Coffin Opened" />
-            : <img className="coffinPic" src={coffinClosed} alt="Coffin Closed" />} {folderInfo.nameFolder}
+            : <img className="coffinPic" src={coffinClosed} alt="Coffin Closed" />
+            }
+            {folderInfo.nameFolder}
         </h3>
         <img style={{left: `${spiderLeft}px`}} src={SpiderImage} alt="Image à déplacer" className="MonsterImage" />
         

@@ -11,7 +11,7 @@ import { createNote, createFolder,  getAllFolders } from './service/SpookyServic
 import type { MenuContextuelProps } from './components/MenuContextuelComponent';
 import MenuContextuelComponent from './components/MenuContextuelComponent';
 import BandeauComponent from './components/bandeau/BandeauComponent';
-import Background from './assets/background_wip.png';
+import NoNote from './assets/background_no_note.png';
 
 
 function AppContent() {
@@ -44,19 +44,20 @@ function AppContent() {
     setMenuContextuel({
       position: { x: event.pageX - 10, y: event.pageY - 10},
       actions: [
-        { label: "Ajouté sous dossier", onClick: () => createFolder(null).then(() => fetchChildItems()) },
-        { label: "Ajouté note", onClick: () => createNote(null , "", "").then(() => fetchChildItems()) },
+        { label: "Ajouter sous dossier", onClick: () => createFolder(null).then(() => fetchChildItems()) },
+        { label: "Ajouter note", onClick: () => createNote(null , "", "").then(() => fetchChildItems()) },
       ],
       onClose: () => setMenuContextuel(null)
     });
 
   };
   return (
-    
-    <div className="MainDiv">
+    <>
       <div>
         <BandeauComponent/>
       </div>
+
+    <div className="MainDiv" style={{width: '100%'}}>
 
       {menuContextuel && (
       <MenuContextuelComponent
@@ -88,10 +89,12 @@ function AppContent() {
       {openedNote ? (
         <NoteComponent key={openedNote.idNote} note={openedNote} updateParent={spookyContext.updateNoteParentFolder} />
       ) : (
-        <p>Aucune note ouverte</p>
+        // <p>Aucune note ouverte</p>
+        <img src={NoNote} alt="NoNote" style={{width: '100%', height: 'auto'}}/>
       )}
     </div>
     </div>
+    </>
   );
 }
 
