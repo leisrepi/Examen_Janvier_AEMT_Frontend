@@ -10,15 +10,22 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@mdxeditor/editor": "^3.52.3",
+    "@types/lodash": "^4.17.23",
+    "@uiw/react-md-editor": "^4.0.11",
     "axios": "^1.13.2",
+    "lodash": "^4.17.21",
+    "markdown-it": "^14.1.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-markdown": "^10.1.0",
+    "react-markdown-editor-lite": "^1.4.1",
     "remark-gfm": "^4.0.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
     "@types/axios": "^0.9.36",
+    "@types/markdown-it": "^14.1.2",
     "@types/node": "^24.10.1",
     "@types/react": "^19.2.5",
     "@types/react-dom": "^19.2.3",
