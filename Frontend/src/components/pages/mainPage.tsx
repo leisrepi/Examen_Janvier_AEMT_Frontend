@@ -75,10 +75,10 @@ export function AppContent() {
           {foldersAndNotes.map((item : Item) => {
             if ("nameFolder" in item) {
                 let folder = item as Folder;
-                return <FolderComponent key={folder.idFolder} folderInfo={folder}/>;
+                return <FolderComponent key={folder.idFolder} folderInfo={folder} updateParent={fetchChildItems}/>;
             }else{
                 let note = item as Note;
-                return <OpenNoteComponent key={note.idNote} note={note} />;
+                return <OpenNoteComponent key={note.idNote} note={note} updateParent={fetchChildItems} />;
             }
           })}
         </div>
