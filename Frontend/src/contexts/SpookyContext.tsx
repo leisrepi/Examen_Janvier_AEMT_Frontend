@@ -25,6 +25,8 @@ interface SpookyContextType {
   setUpdateNoteParentFolder: (fn: () => void) => void;
   updateNoteParentFolder: () => void;
   removeNote: (id: number) => Promise<void>;
+  setEditNoteSaveFunction: (fn: () => void) => void;
+  editNoteSaveFunction: () => void;
 }
 
 
@@ -37,6 +39,14 @@ export const SpookyProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const explorerRefreshRef = useRef<() => void>(() => {});
 
 
+  const editNoteSaveFunctionRef = useRef<() => void>(() => {});
+
+  const setEditNoteSaveFunction = (fn: () => void) => {
+    editNoteSaveFunctionRef.current = fn;
+  };
+  const editNoteSaveFunction = () => {
+    editNoteSaveFunctionRef.current();
+  }
   const updateNoteParentFolderRef = useRef<() => void>(() => {});
 
   const setUpdateNoteParentFolder = (fn: () => void) => {
@@ -113,6 +123,8 @@ const addFolder = async (parentId: number) => {
         removeNote,
         setUpdateNoteParentFolder,
         updateNoteParentFolder,
+        setEditNoteSaveFunction,
+        editNoteSaveFunction,
       }}
     >
       {children}

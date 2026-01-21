@@ -51,6 +51,8 @@ const NoteComponent: React.FC<NoteComponentProps> = ({ note, updateParent }) => 
     }
   }
 
+  
+
   useEffect(() => {
     updateNoteParent();
   }, [note]);
@@ -91,12 +93,18 @@ const NoteComponent: React.FC<NoteComponentProps> = ({ note, updateParent }) => 
     };
   }, []);
 
+  //connecter la fonction de sauvegarde automatique du contexte
+  useEffect(() => {
+    spookyContext.setEditNoteSaveFunction(handleSave);
+  }, [currentContent, title]);
+
+
   // fonction de sauvegarde automatique à chaque changement de contenu
   
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       handleSave();
-    }, 2000); 
+    }, 2000); // Sauvegarde toutes les 2 secondes après le dernier changement
     return () => clearTimeout(timeoutId); 
   }, [currentContent, title]);
 
@@ -108,8 +116,15 @@ const NoteComponent: React.FC<NoteComponentProps> = ({ note, updateParent }) => 
       lastModificationNote: new Date(),
     };
     await updateExistingNote(updatedNote);
+    note = updatedNote; // Met à jour la note locale
     updateNoteParent();
+    console.log("Note saved:", updatedNote);
   };
+
+  useEffect(() => {
+    spookyContext.setEditNoteSaveFunction(handleSave);
+    console.log(handleSave);
+  },[]);
 
   return (
     <div className="noteDiv"style={{ padding: "10px", border: "1px solid #ccc", backgroundColor: "#fff" }}>

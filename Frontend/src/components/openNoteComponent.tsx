@@ -98,9 +98,20 @@ export default function OpenNoteComponent({note, updateParent}: Props) {
 
     };
 
-  const openFile = () => {
-    spookyContext.setOpenedNote(note);
-    spookyContext.setUpdateNoteParentFolder(updateParent || (() => {}));
+  const openFile = async () => {
+    if (spookyContext.openedNote) {
+      if (spookyContext.editNoteSaveFunction) {
+        await spookyContext.editNoteSaveFunction();
+        await new Promise(resolve => setTimeout(resolve, 300));
+        if (updateParent) updateParent();
+        spookyContext.setOpenedNote(note);
+        spookyContext.setUpdateNoteParentFolder(updateParent || (() => {}));
+        console.log("Saved current note before opening new one.");
+      }
+    }else{
+      spookyContext.setOpenedNote(note);
+      spookyContext.setUpdateNoteParentFolder(updateParent || (() => {}));
+    }
   }
 
 

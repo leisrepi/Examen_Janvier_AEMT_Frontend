@@ -48,7 +48,8 @@ export default function FolderComponent({folderInfo, updateParent}: Props)  {
 
     function fetchChildItems(){
         getFolderChildreen(folderInfo.idFolder).then((items : Item[]) => {
-            setChildFoldersAndNotes([...items]);
+            //setChildFoldersAndNotes([...items]);
+            setChildFoldersAndNotes(items.map(item => ({ ...item })));
             console.log("Fetched child items:");
             console.log(items);
         });
