@@ -78,7 +78,8 @@ export const updateNote = async (note: Note): Promise<Note> => {
     const response = await axios.put<Note>(`${API_BASE_URL}/note/${note.idNote}`, {
         nameNote : note.nameNote,
         contentNote : note.contentNote,
-        idFolder: note.idFolder
+        idFolder: note.idFolder,
+        toBin : note.toBin
     });
     return response.data;
 };
