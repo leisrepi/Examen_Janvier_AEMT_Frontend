@@ -47,7 +47,7 @@ export default function OpenNoteComponent({note}: Props) {
 
   return (
     <div className="OpenNoteComponent">
-        {/* <h4 onContextMenu={handleRightClick} onClick={openFile}><img className="coffinPic" src={parchment} alt="Coffin icon" /> {note.nameNote}</h4> */}
+        {/* <h4 onContextMenu={handleRigOhtClick} onClick={openFile}><img className="coffinPic" src={parchment} alt="Coffin icon" /> {note.nameNote}</h4> */}
         <h4 onContextMenu={handleRightClick} onClick={openFile}><img className="parchmentPic" src={parchment} alt="Coffin icon" /> {note.nameNote}</h4>
         {menuContextuel && (
           <MenuContextuelComponent

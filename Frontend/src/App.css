@@ -37,7 +37,7 @@ h4 {
 
 
 div.OpenedNote {
-  width: calc(100vw - 400px - 40px); /* 400px pour l’explorer, 40px pour le gap */
+  width: calc(100vw - 400px  - 40px ); /* 400px pour l’explorer, 40px pour le gap */
 }
 
 .note-image {
@@ -79,6 +79,7 @@ div.ExplorerDiv {
 .explorerContent {
   flex-grow: 1; /* occupe tout l’espace restant */
   overflow-y: auto; /* scroll uniquement ici */
+  padding-top: 30px;
   padding-right: 30px;
 }
 

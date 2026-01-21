@@ -42,9 +42,9 @@ const NoteComponent: React.FC<NoteComponentProps> = ({ note }) => {
 
   return (
     <div className="noteDiv">
-      <h2>Éditer la note est ce que c'est plus grand ?</h2>
+      <h2>Édition de note</h2>
       {/* <h2>Édition de la note</h2> */}
-      <input
+      <input className='nameZone'
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         style={{ width: '100%', marginBottom: '10px' }}
@@ -62,7 +62,7 @@ const NoteComponent: React.FC<NoteComponentProps> = ({ note }) => {
       </div>
 
       {/* Métadonnées */}
-      <div style={{ marginTop: '15px', fontSize: '14px', color: '#555' }}>
+      <div className="metadata" style={{ marginTop: '15px', fontSize: '14px', color: '#555' }}>
         <p><strong>Taille :</strong> {metadata.sizeBytes} octets</p>
         <p><strong>Mots :</strong> {metadata.wordCount}</p>
         <p><strong>Caractères :</strong> {metadata.charCount}</p>
