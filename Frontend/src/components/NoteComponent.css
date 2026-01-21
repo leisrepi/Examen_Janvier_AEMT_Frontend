@@ -97,7 +97,7 @@
 }
 
 .noteDiv > div:last-child strong {
-  color: #ff6600; /* ✅ Orange pour les titres (Taille, Mots, etc.) */
+  color: orangered; /* ✅ Orange pour les titres (Taille, Mots, etc.) */
 }
 
 
@@ -116,10 +116,6 @@
   width: 100% !important; /* ✅ Écrase les styles internes */
   box-sizing: border-box;
 } 
-
-.mdxeditor-root-contenteditable{
-  /* padding: 5px;  */
-}
 
 
 /* Éditeur Markdown */

@@ -128,10 +128,11 @@ export default function FolderComponent({folderInfo, updateParent}: Props)  {
             className={folderOpen ? "FolderOpen" : "FolderClosed"}
         >
 
-            {/* {folderOpen ? "📂" : "📁"} {folderInfo.nameFolder} */}
             {folderOpen
             ? <img className="coffinPic" src={coffinOpened} alt="Coffin Opened" />
-            : <img className="coffinPic" src={coffinClosed} alt="Coffin Closed" />} {folderInfo.nameFolder}
+            : <img className="coffinPic" src={coffinClosed} alt="Coffin Closed" />
+            }
+            {folderInfo.nameFolder}
         </h3>
         <img style={{left: `${spiderLeft}px`}} src={SpiderImage} alt="Image à déplacer" className="MonsterImage" />
         

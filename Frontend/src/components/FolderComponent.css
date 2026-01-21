@@ -11,12 +11,17 @@
   background-color: #fed199;
   padding: 5px;
   border : 1px solid black;
+
+  /* Ajout pour tronquer le texte sans changer la largeur */
+  white-space: nowrap;        /* Empêche le retour à la ligne */
+  overflow: hidden;           /* Cache le texte qui dépasse */
+  text-overflow: ellipsis;    /* Ajoute "..." à la fin */
+  display: block;             /* Ou inline-block si nécessaire */
 }
 
 .FolderComponent h3:hover, .OpenNoteComponent h4:hover {
   background-color: #ef8f00;
   cursor: pointer;
-  
 }
 
 .FolderComponent h3:hover + .MonsterImage {

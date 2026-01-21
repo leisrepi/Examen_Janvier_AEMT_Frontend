@@ -90,7 +90,7 @@ function AppContent() {
         <NoteComponent key={openedNote.idNote} note={openedNote} updateParent={spookyContext.updateNoteParentFolder} />
       ) : (
         // <p>Aucune note ouverte</p>
-        <img src={NoNote} alt="NoNote" style={{maxWidth: '100%', height: 'auto'}}/>
+        <img src={NoNote} alt="NoNote" style={{width: '100%', height: 'auto'}}/>
       )}
     </div>
     </div>
