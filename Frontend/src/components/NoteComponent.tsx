@@ -41,7 +41,7 @@ const NoteComponent: React.FC<NoteComponentProps> = ({ noteData, updateParent })
   const spookyContext = useContext(SpookyContext);
   if (!spookyContext) return null; // Sécurité si le contexte est null
   
-  // Contenu actuel (pour la sauvegarde)
+  // Current content (for backup)
   const [currentContent, setCurrentContent] = useState(note.contentNote || "");
   const [isEditing, setIsEditing] = useState(true);
   
@@ -49,7 +49,7 @@ const NoteComponent: React.FC<NoteComponentProps> = ({ noteData, updateParent })
     sizeBytes: 0, wordCount: 0, charCount: 0, lineCount: 0,
   });
 
-  //mise a jour du parent quand la note change
+  //update parent when note changes
   function updateNoteParent() {
     if (updateParent) {
       updateParent();
@@ -63,7 +63,7 @@ async function remplacerLiensMarkdown(texte : string) : Promise<string> {
   let match;
   let nouveauTexte = texte;
 
-  // Tableau pour stocker les promesses
+  // Table for storing promises
   const promesses = [];
 
   while ((match = regex.exec(texte)) !== null) {
@@ -76,10 +76,10 @@ async function remplacerLiensMarkdown(texte : string) : Promise<string> {
       if (numMatch) {
         numero = parseInt(numMatch[1], 10);
 
-        // Préparer la promesse pour remplacer le texte
+        // Prepare the promise to replace the text
         promesses.push(
           getNoteById(numero).then(note => {
-            // Remplacer dans le texte original
+            // Replace in the original text
             nouveauTexte = nouveauTexte.replace(
               `[${texteLien}](${url})`,
               `[${note.nameNote}](${url})`
@@ -90,7 +90,7 @@ async function remplacerLiensMarkdown(texte : string) : Promise<string> {
     }
   }
 
-  // Attendre que toutes les promesses soient terminées
+  // Wait until all promises are completed
   await Promise.all(promesses);
 
   return nouveauTexte;
@@ -107,14 +107,13 @@ async function remplacerLiensMarkdown(texte : string) : Promise<string> {
   // Initialisation
   useEffect(() => {
     setTitle(note.nameNote);
-    //setCurrentContent(note.contentNote || "");
     updateLink();
     editorRef.current?.setMarkdown(note.contentNote || "");
-    // Calcul initial des métadonnées
+    // Initial metadata calculation
     calculateMetadata(note.contentNote || "");
   }, [note]);
 
-  // Fonction lourde de calcul (déplacée hors du useEffect)
+  // Heavy calculation function (moved outside of useEffect)
   const calculateMetadata = (content: string) => {
     const safeContent = content || "";
     const sizeBytes = new Blob([safeContent]).size;
@@ -125,13 +124,12 @@ async function remplacerLiensMarkdown(texte : string) : Promise<string> {
     setMetadata({ sizeBytes, wordCount: words, charCount: chars, lineCount: lines });
   };
 
-  // VERSION OPTIMISÉE : On utilise useMemo pour créer une fonction "debouncée"
-  // Elle ne s'exécutera que 500ms après la dernière frappe.
+  // Debounced update function
   const debouncedUpdate = useMemo(() => {
     return (newMarkdown: string) => {
-      // On met à jour le state local (rapide)
+      // Update the local state (quick)
 
-      // Supprimer les backslashes
+      // Remove backslashes
       const cleanMarkdown = newMarkdown.replace(/\\/g, '');
 
       // Met à jour le state local
@@ -139,8 +137,8 @@ async function remplacerLiensMarkdown(texte : string) : Promise<string> {
 
       
       
-      // On retarde le calcul lourd (les métadonnées)
-      // Pour éviter d'installer lodash, on utilise un simple timeout ici
+      // We delay the heavy calculation (metadata)
+      // To avoid installing lodash, we use a simple timeout here
       if (window.timerMetadata) clearTimeout(window.timerMetadata);
       window.timerMetadata = setTimeout(() => {
         calculateMetadata(newMarkdown);
@@ -148,18 +146,18 @@ async function remplacerLiensMarkdown(texte : string) : Promise<string> {
     };
   }, []);
 
-  //connecter la fonction de sauvegarde automatique du contexte
+    //connect the automatic context backup function
   useEffect(() => {
     spookyContext.setEditNoteSaveFunction(handleSave);
   }, [currentContent, title]);
 
 
-  // fonction de sauvegarde automatique à chaque changement de contenu
-  
+    // automatic save function with every content change
+
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       handleSave();
-    }, 2000); // Sauvegarde toutes les 2 secondes après le dernier changement
+    }, 2000); // Saves every 2 seconds after the last change
     return () => clearTimeout(timeoutId); 
   }, [currentContent, title]);
 
@@ -171,7 +169,7 @@ async function remplacerLiensMarkdown(texte : string) : Promise<string> {
       lastModificationNote: new Date(),
     };
     await updateExistingNote(updatedNote);
-    setNote(updatedNote); // Met à jour la note locale
+    setNote(updatedNote); // Updates the local note
     updateNoteParent();
     console.log("Note saved:", updatedNote);
   };
@@ -209,9 +207,9 @@ async function remplacerLiensMarkdown(texte : string) : Promise<string> {
       <div className="markdown-body">
         <MDXEditor
           ref={editorRef}
-          markdown={currentContent} // Valeur initiale
+          markdown={currentContent} // Initial value
           readOnly={!isEditing}
-          onChange={debouncedUpdate} // Utilisation de la fonction debouncée
+          onChange={debouncedUpdate} // Using the debounced function
           contentEditableClassName="spooky-editor-content"
           plugins={[
             headingsPlugin(),
@@ -221,7 +219,7 @@ async function remplacerLiensMarkdown(texte : string) : Promise<string> {
             markdownShortcutPlugin(),
             tablePlugin(),
             linkPlugin(),
-            //on force les liens a s'ouvrir normalement dans la meme fenetre (click molette disponible)
+            //links are forced to open normally in the same window (scroll wheel click available)
             linkDialogPlugin({
               onClickLinkCallback: (url) => window.location.assign(url),
               onReadOnlyClickLinkCallback: (event, _node, url) => {
