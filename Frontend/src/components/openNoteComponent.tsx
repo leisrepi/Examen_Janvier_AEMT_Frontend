@@ -4,7 +4,7 @@ import MenuContextuelComponent from "./MenuContextuelComponent";
 import type { MenuContextuelProps } from "./MenuContextuelComponent";
 import { useContext } from "react";
 import {SpookyContext}  from "../contexts/SpookyContext";
-import {updateNote, deleteNote,exportNotePdf, getNoteById} from "../service/SpookyService";
+import {updateNote, moveToBin ,exportNotePdf, getNoteById} from "../service/SpookyService";
 
 import parchment from "../assets/parchment.png";
 import './OpenNoteComponent.css';
@@ -110,14 +110,12 @@ export default function OpenNoteComponent({note, updateParent}: Props) {
       spookyContext.setOpenedNote(null); 
     }
 
-    updateNote({
-      ...note,
-      toBin: true
-    }).then(() => {
+    moveToBin(note).then(() => {
         if (updateParent){
           updateParent();
         }
     });
+    
 
   }
 
@@ -136,6 +134,7 @@ export default function OpenNoteComponent({note, updateParent}: Props) {
             actions: [
             { label: "Renommer", onClick: () => renameNoteClick() },
             { label: "Supprimer", onClick: () => deleteNoteClick() },
+            { label: "Copier lien", onClick: () => getLinkOfNote() },
              { 
                     label: "📄 Exporter PDF", 
                     onClick: async () => {
@@ -183,6 +182,18 @@ export default function OpenNoteComponent({note, updateParent}: Props) {
     }
   }
 
+  function getLinkOfNote(){
+
+    let link = "["+note.nameNote+"](" + window.location.origin + "/main/" + note.idNote + ")";
+    navigator.clipboard.writeText(link)
+    .then(() => {
+      console.log("Texte copié !");
+    })
+    .catch(err => {
+      console.error("Erreur lors de la copie :", err);
+    });
+
+  }
 
   return (
     <div className="OpenNoteComponent">

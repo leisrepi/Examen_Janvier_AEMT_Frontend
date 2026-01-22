@@ -6,7 +6,7 @@ import {useEffect, useState } from 'react';
 import OpenNoteComponent from './openNoteComponent';
 import SpiderImage from "../assets/Spider.png";
 import coffinClosed from '../assets/coffin_closed.png';
-import {createFolder, getFolderChildreen, deleteFolder, updateFolder, createNote} from '../service/SpookyService';
+import {restoreFromBin, getFolderChildreen, deleteFolder, updateFolder, } from '../service/SpookyService';
 
 import './FolderComponent.css';
 
@@ -54,14 +54,11 @@ export default function FolderComponent({folderInfo, updateParent}: Props)  {
     }
 
     function restoreFolderClick(){  
-        updateFolder({
-            ...folderInfo,
-            toBin: false
-        }).then(() => {
-            if (updateParent) {
-                updateParent();
-            }
-        });
+        restoreFromBin(folderInfo).then(() => {
+        if (updateParent){
+          updateParent();
+        }
+      });
     }
 
     /*-------------------------------Event---------------------------------*/
@@ -92,13 +89,6 @@ export default function FolderComponent({folderInfo, updateParent}: Props)  {
         });
     }
 
-    function openFolder(){
-        setFolderOpen(!folderOpen);
-        if (childfoldersAndNotes.length > 0) {
-            return;
-        }
-        fetchChildItems(); 
-    }
 
     return (
     <div className="FolderComponent">
@@ -109,7 +99,7 @@ export default function FolderComponent({folderInfo, updateParent}: Props)  {
             onClose={() => setMenuContextuel(null)}
         />
         )}
-        <h3 onClick={() => openFolder()} onContextMenu={handleRightClick}>
+        <h3 onContextMenu={handleRightClick}>
             <img className="coffinPic" src={coffinClosed} alt="Coffin Closed" /> {folderInfo.nameFolder}
         </h3>
         <img style={{left: `${spiderLeft}px`}} src={SpiderImage} alt="Image à déplacer" className="MonsterImage" />

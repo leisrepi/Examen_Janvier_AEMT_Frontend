@@ -7,7 +7,7 @@ import OpenNoteComponent from './openNoteComponent';
 import SpiderImage from "../assets/Spider.png";
 import coffinClosed from '../assets/coffin_closed.png';
 import coffinOpened from '../assets/coffin_opened.png';
-import {createFolder, getFolderChildreen, deleteFolder, updateFolder, createNote,exportFolderZip} from '../service/SpookyService';
+import {createFolder, getFolderChildreen, restoreFromBin, updateFolder, createNote,exportFolderZip, moveToBin} from '../service/SpookyService';
 
 
 
@@ -56,20 +56,8 @@ export default function FolderComponent({folderInfo, updateParent}: Props)  {
         fetchChildItems(); 
     }
     async function deleteFolderClick(){  
-       /* if (!confirm("Voulez-vous vraiment supprimer ce dossier ?")) {
-            return; //refuser on quitte la fonction   
-        }
-        await deleteFolder(folderInfo.idFolder).then(() => {
-            if (updateParent) {
-                updateParent();
-            }
-        });*/
-
-        updateFolder({
-            ...folderInfo,
-            toBin: true
-        }).then(() => {
-            if (updateParent) {
+        moveToBin(folderInfo).then(() => {
+            if (updateParent){
                 updateParent();
             }
         });

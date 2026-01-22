@@ -4,7 +4,7 @@ import MenuContextuelComponent from "./MenuContextuelComponent";
 import type { MenuContextuelProps } from "./MenuContextuelComponent";
 import { useContext } from "react";
 import {SpookyContext}  from "../contexts/SpookyContext";
-import {updateNote, deleteNote} from "../service/SpookyService";
+import {restoreFromBin, deleteNote} from "../service/SpookyService";
 
 import parchment from "../assets/parchment.png";
 import './OpenNoteComponent.css';
@@ -45,23 +45,13 @@ export default function OpenNoteComponent({note, updateParent}: Props) {
   }
   
   function restoreNoteClick() {
-    updateNote({
-      ...note,
-      toBin: false
-    }).then(() => {
-      if (updateParent) {
-        updateParent();
-      }
-    });
+    restoreFromBin(note).then(() => {
+        if (updateParent){
+          updateParent();
+        }
+      });
   }
 
-  function openFolder(){
-    setFolderOpen(!folderOpen);
-    if (childfoldersAndNotes.length > 0) {
-        return;
-    }
-    fetchChildItems(); 
-  }
 
   /*Context menu*/
   const [menuContextuel, setMenuContextuel] = useState<MenuContextuelProps | null>(null);

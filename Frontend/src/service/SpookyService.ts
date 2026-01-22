@@ -84,7 +84,6 @@ export const updateNote = async (note: Note): Promise<Note> => {
         nameNote : note.nameNote,
         contentNote : note.contentNote,
         idFolder: note.idFolder,
-        toBin : note.toBin
     });
     console.log('Updated note:');
     console.log(response.data);
@@ -100,7 +99,25 @@ export const updateFolder = async (folder: Folder): Promise<Folder> => {
     });
     return response.data;
 };
-
+//Endpoint to add and remove notes and folders from the bin
+export const moveToBin = async (item: Item): Promise<void> => {
+    if ('idNote' in item) {
+        // It's a note
+        await axios.put(`${API_BASE_URL}/bin/add-note/${item.idNote}`);
+    } else {
+        // It's a folder
+        await axios.put(`${API_BASE_URL}/bin/add-folder/${item.idFolder}`);
+    }
+};
+export const restoreFromBin = async (item: Item): Promise<void> => {
+    if ('idNote' in item) {
+        // It's a note
+        await axios.put(`${API_BASE_URL}/bin/remove-note/${item.idNote}`);
+    } else {
+        // It's a folder
+        await axios.put(`${API_BASE_URL}/bin/remove-folder/${item.idFolder}`);
+    }
+};
 
 export const deleteNote = async (noteId: number): Promise<void> => {
     await axios.delete(`${API_BASE_URL}/note/${noteId}`);
