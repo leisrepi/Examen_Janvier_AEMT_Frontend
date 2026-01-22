@@ -86,7 +86,7 @@ export default function FolderComponent({folderInfo, updateParent}: Props)  {
             }
             setFolderName(info);
             folderInfo.nameFolder = info;
-            //Appel service pour renommer le dossier
+            // Call the update function to save the new name
             updateFolder(folderInfo).then(() => fetchChildItems());
         } else {
             console.log("Aucune info saisie");
@@ -97,7 +97,7 @@ export default function FolderComponent({folderInfo, updateParent}: Props)  {
     /*-------------------------------Event---------------------------------*/
 
     const handleRightClick = (event) => {
-        event.preventDefault(); // Empêche le menu contextuel par défaut
+        event.preventDefault(); // Enable custom context menu
         event.stopPropagation(); 
         if (menuContextuel) {
             return; 

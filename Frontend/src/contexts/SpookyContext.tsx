@@ -91,11 +91,6 @@ const addFolder = async (parentId: number) => {
   await refreshFolders();
 };
 
-  /*const addFolder = async (name: string) => {
-    await createFolder(name);
-    await refreshFolders();
-  };
-*/
   const removeFolder = async (id: number) => {
     await deleteFolder(id);
     await refreshFolders();

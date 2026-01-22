@@ -30,6 +30,6 @@ export default function MenuContextuelComponent({position, actions, onClose}:Pro
         ))}
         </ul>
     </div>,
-    document.body // <-- rendu en dehors des parents
+    document.body 
     );
 }

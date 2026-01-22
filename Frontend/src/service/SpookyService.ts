@@ -41,7 +41,7 @@ export const getNotesInFolder = async (folderId: number): Promise<Note[]> => {
     const response = await axios.get<Note[]>(`${API_BASE_URL}/folder/${folderId}/notes`);
     return response.data;
 }
-//renvoie les dossiers et notes enfants d'un dossier
+// returns the children files and notes of a file
 export const getFolderChildreen = async (folderId: number): Promise<Item[]> => {
     console.log(`Fetching children of folder ID: ${folderId}`);
     const url = `${API_BASE_URL}/folder/${folderId}`;

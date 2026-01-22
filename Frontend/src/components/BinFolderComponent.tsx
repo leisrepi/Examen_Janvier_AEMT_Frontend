@@ -6,11 +6,7 @@ import {useEffect, useState } from 'react';
 import OpenNoteComponent from './openNoteComponent';
 import SpiderImage from "../assets/Spider.png";
 import coffinClosed from '../assets/coffin_closed.png';
-import coffinOpened from '../assets/coffin_opened.png';
 import {createFolder, getFolderChildreen, deleteFolder, updateFolder, createNote} from '../service/SpookyService';
-
-
-
 
 import './FolderComponent.css';
 
@@ -45,7 +41,7 @@ export default function FolderComponent({folderInfo, updateParent}: Props)  {
     
     async function deleteFolderClick(){  
         if (!confirm("Voulez-vous vraiment supprimer ce dossier définitivement?")) {
-            return; //refuser on quitte la fonction   
+            return; //refuse or cancel  
         }
         await deleteFolder(folderInfo.idFolder).then(() => {
             if (updateParent) {
@@ -57,7 +53,6 @@ export default function FolderComponent({folderInfo, updateParent}: Props)  {
         
     }
 
-    //TODO implémenter nouveau systeme
     function restoreFolderClick(){  
         updateFolder({
             ...folderInfo,
@@ -72,7 +67,7 @@ export default function FolderComponent({folderInfo, updateParent}: Props)  {
     /*-------------------------------Event---------------------------------*/
 
     const handleRightClick = (event) => {
-        event.preventDefault(); // Empêche le menu contextuel par défaut
+        event.preventDefault(); // Enable custom context menu
         event.stopPropagation(); 
         if (menuContextuel) {
             return; 

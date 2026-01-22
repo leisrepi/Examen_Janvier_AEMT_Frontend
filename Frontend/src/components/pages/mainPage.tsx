@@ -23,8 +23,7 @@ export function AppContent() {
   const [menuContextuel, setMenuContextuel] = useState<MenuContextuelProps | null>(null);
 
   const spookyContext = useContext(SpookyContext);
-  if (!spookyContext) return null; // Sécurité si le contexte est null
-  //TODO mettre le menu contextuel dans le contexte pour l'utiliser partout
+  if (!spookyContext) return null; // Security if context is not available
 
   function fetchChildItems(){
     getAllFolders().then((items : Item[]) => {
@@ -43,10 +42,10 @@ export function AppContent() {
   }, []);
   
   const handleRightClickExplorerDiv = (event) => {
-    event.preventDefault(); // Empêche le menu contextuel par défaut
+    event.preventDefault(); //  Prevents the default context menu
     console.log("right click explorer div");
     if (menuContextuel) {
-      return; // Si le menu est déjà ouvert, ne rien faire
+      return; // If menu is already open, do nothing
     }
     
     setMenuContextuel({
@@ -75,7 +74,7 @@ export function AppContent() {
       />)}
 
       
-      {/* Barre latérale */}
+      {/*Sidebar*/}
       <div className="ExplorerDiv"  onContextMenu={handleRightClickExplorerDiv} style={{ visibility: spookyContext.loadedPage === "noteView" ? "visible" : "hidden" }}>
         <h2 className='explorateurTitle'>Explorateur</h2>
         <div className="explorerContent">
@@ -91,7 +90,7 @@ export function AppContent() {
         </div>
       </div>
 
-      {/* Zone de contenu */}
+      {/* Content area */}
       
     <div className="OpenedNote">
       {openedNote ? (
