@@ -12,11 +12,11 @@
   padding: 5px;
   border : 1px solid black;
 
-  /* Ajout pour tronquer le texte sans changer la largeur */
-  white-space: nowrap;        /* Empêche le retour à la ligne */
-  overflow: hidden;           /* Cache le texte qui dépasse */
-  text-overflow: ellipsis;    /* Ajoute "..." à la fin */
-  display: block;             /* Ou inline-block si nécessaire */
+  /* Addition to truncate text without changing width */
+  white-space: nowrap;        /* Prevents line break */
+  overflow: hidden;           /* Hides overflowing text */
+  text-overflow: ellipsis;    /* Adds "..." at the end */
+  display: block;             /* Or inline-block if necessary */
 }
 
 .FolderComponent h3:hover, .OpenNoteComponent h4:hover {

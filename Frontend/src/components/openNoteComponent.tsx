@@ -22,7 +22,7 @@ export default function OpenNoteComponent({note, updateParent}: Props) {
   const spookyContext = useContext(SpookyContext);
   const [noteName, setNoteName] = useState<string>(note.nameNote);
 
-  if (!spookyContext) return null; // Sécurité si le contexte est null
+  if (!spookyContext) return null; // Security if the context is null
 
   useEffect(() => {
     setNoteName(note.nameNote);
@@ -39,7 +39,7 @@ export default function OpenNoteComponent({note, updateParent}: Props) {
     let match;
     let nouveauTexte = texte;
   
-    // Tableau pour stocker les promesses
+    // Table for storing pledges
     const promesses = [];
   
     while ((match = regex.exec(texte)) !== null) {
@@ -52,10 +52,10 @@ export default function OpenNoteComponent({note, updateParent}: Props) {
         if (numMatch) {
           numero = parseInt(numMatch[1], 10);
   
-          // Préparer la promesse pour remplacer le texte
+          // Prepare the promise to replace the text
           promesses.push(
             getNoteById(numero).then(note => {
-              // Remplacer dans le texte original
+              // Replace in the original text
               nouveauTexte = nouveauTexte.replace(
                 `[${texteLien}](${url})`,
                 `[${note.nameNote}](${url})`
@@ -71,7 +71,7 @@ export default function OpenNoteComponent({note, updateParent}: Props) {
         }
       }
     }
-    // Attendre que toutes les promesses soient terminées
+    // Wait until all the pledges are finished
     await Promise.all(promesses);
 
     return nouveauTexte;
@@ -80,9 +80,8 @@ export default function OpenNoteComponent({note, updateParent}: Props) {
   function renameNoteClick() {
     const newName = prompt("Entrez le nouveau nom de la note :", note.nameNote);
     if (newName && newName.trim() !== "") {
-        // Appeler la fonction de mise à jour du nom de la note ici
+        // Call the note name update function here
         console.log(`Renommer la note ${note.idNote} en ${newName}`);
-        // Par exemple : updateNoteName(note.idNote, newName).then(() => { ... });
         updateNote({
             ...note,
             nameNote: newName
@@ -105,7 +104,7 @@ export default function OpenNoteComponent({note, updateParent}: Props) {
   function deleteNoteClick() {
     /*const confirmDelete = window.confirm(`Êtes-vous sûr de vouloir supprimer la note "${note.nameNote}" ?`);
     if (!confirmDelete) {
-      return; // L'utilisateur a annulé la suppression
+      return; 
     }*/
     if (spookyContext.openedNote?.idNote === note.idNote) {
       spookyContext.setOpenedNote(null); 
@@ -122,14 +121,14 @@ export default function OpenNoteComponent({note, updateParent}: Props) {
 
   }
 
-  /*Menu contextuel*/
+  /*Context menu*/
   const [menuContextuel, setMenuContextuel] = useState<MenuContextuelProps | null>(null);
   
   const handleRightClick = (event) => {
-        event.preventDefault(); // Empêche le menu contextuel par défaut
+        event.preventDefault(); 
         event.stopPropagation(); 
         if (menuContextuel) {
-            return; // Si le menu est déjà ouvert, ne rien faire
+            return; 
         }
         
         setMenuContextuel({
@@ -187,7 +186,6 @@ export default function OpenNoteComponent({note, updateParent}: Props) {
 
   return (
     <div className="OpenNoteComponent">
-        {/* <h4 onContextMenu={handleRigOhtClick} onClick={openFile}><img className="coffinPic" src={parchment} alt="Coffin icon" /> {note.nameNote}</h4> */}
         <h4 onContextMenu={handleRightClick} onClick={openFile}><img className="parchmentPic" src={parchment} alt="Coffin icon" /> {note.nameNote}</h4>
         {menuContextuel && (
           <MenuContextuelComponent

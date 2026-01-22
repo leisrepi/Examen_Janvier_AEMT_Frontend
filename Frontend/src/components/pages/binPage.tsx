@@ -28,10 +28,10 @@ export default function BinPage() {
     }
 
     const handleRightClickTitle = (event) => {
-        event.preventDefault(); // Empêche le menu contextuel par défaut
+        event.preventDefault(); // Prevents the default context menu
         console.log("right click explorer div");
         if (menuContextuel) {
-          return; // Si le menu est déjà ouvert, ne rien faire
+          return; // If menu is already open, do nothing
         }
         
         setMenuContextuel({

@@ -31,12 +31,12 @@ export default function OpenNoteComponent({note, updateParent}: Props) {
   function deleteNoteClick() {
     const confirmDelete = window.confirm(`Êtes-vous sûr de vouloir supprimer la note "${note.nameNote}" ?`);
     if (!confirmDelete) {
-      return; // L'utilisateur a annulé la suppression
+      return; // The user cancelled the deletion.
     }
     
-    //supprésion réelle
+    //real deletion
     deleteNote(note.idNote).then(() => {
-        // Retirer la note de l'état global ou du contexte
+        //  Remove the note from the overall status or context
         alert("Note supprimée avec succès.");
         if (updateParent){
           updateParent();
@@ -63,14 +63,14 @@ export default function OpenNoteComponent({note, updateParent}: Props) {
     fetchChildItems(); 
   }
 
-  /*Menu contextuel*/
+  /*Context menu*/
   const [menuContextuel, setMenuContextuel] = useState<MenuContextuelProps | null>(null);
   
   const handleRightClick = (event) => {
-        event.preventDefault(); // Empêche le menu contextuel par défaut
+        event.preventDefault(); //Prevents the default context menu
         event.stopPropagation(); 
         if (menuContextuel) {
-            return; // Si le menu est déjà ouvert, ne rien faire
+            return; 
         }
         
         setMenuContextuel({

@@ -1,7 +1,5 @@
 import { NavLink, Route, Routes } from "react-router-dom";
-import { SpookyContext, SpookyProvider, useSpooky } from './contexts/SpookyContext';
 import "./app.css";
-//import NotFoundComponent from "./core/components/NotFoundComponent";
 import Main from "./components/pages/mainPage.tsx";
 import Bin from "./components/pages/binPage.tsx";
 
