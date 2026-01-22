@@ -24,14 +24,15 @@ import "./Markdown.css";
 import '../components/NoteComponent.css';
 
 interface NoteComponentProps {
-  note: Note;
+  noteData: Note;
   updateParent? : () => void;
 }
 
-const NoteComponent: React.FC<NoteComponentProps> = ({ note, updateParent }) => {
+const NoteComponent: React.FC<NoteComponentProps> = ({ noteData, updateParent }) => {
   const { updateExistingNote, removeNote } = useSpooky();
-  const [title, setTitle] = useState(note.nameNote);
+  const [title, setTitle] = useState(noteData.nameNote);
   const editorRef = useRef<MDXEditorMethods>(null);
+  const [note, setNote] = useState<Note>(noteData);
 
   const spookyContext = useContext(SpookyContext);
   if (!spookyContext) return null; // Sécurité si le contexte est null
@@ -116,7 +117,7 @@ const NoteComponent: React.FC<NoteComponentProps> = ({ note, updateParent }) => 
       lastModificationNote: new Date(),
     };
     await updateExistingNote(updatedNote);
-    note = updatedNote; // Met à jour la note locale
+    setNote(updatedNote); // Met à jour la note locale
     updateNoteParent();
     console.log("Note saved:", updatedNote);
   };

@@ -89,7 +89,7 @@ export function AppContent() {
       
     <div className="OpenedNote">
       {openedNote ? (
-        <NoteComponent key={openedNote.idNote} note={openedNote} updateParent={spookyContext.updateNoteParentFolder} />
+        <NoteComponent key={openedNote.idNote} noteData={openedNote} updateParent={spookyContext.updateNoteParentFolder} />
       ) : (
         <img src={NoNote} alt="No note" style={{width: '100%', height: 'auto'}} />
       )}
