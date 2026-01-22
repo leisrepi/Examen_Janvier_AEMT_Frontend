@@ -55,8 +55,8 @@ export default function BinPage() {
                   actions={menuContextuel.actions}
                   onClose={() => setMenuContextuel(null)}
               />)}
-        <div className="binExplorer">
-            <h2 onContextMenu={handleRightClickTitle} style={{textAlign: "center", fontSize: "2.5rem"}}>Morgue</h2>
+        <div className="binExplorer" onContextMenu={handleRightClickTitle} >
+            <h2 style={{textAlign: "center", fontSize: "2.5rem"}}>Morgue</h2>
             <div className="explorerContent">
                 {foldersAndNotes.map((item : Item) => {
                     if ("nameFolder" in item) {
