@@ -1,0 +1,29 @@
+
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden; /* Empêche le scroll horizontal */
+}
+
+.error-page {
+    background: url('../../assets/background_erreur.png') no-repeat center center;
+    background-size: cover; /* Étire l'image pour couvrir toute la zone */
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    color: #850606;
+    font-size: 3rem;
+    font-family: 'stoneTomb', cursive;
+    padding-top: 50px;
+    box-sizing: border-box; /* Évite que le padding ajoute de la largeur */
+}
+
+h2 {
+    font-family: 'creakingCrypt',     cursive;
+    color: orangered;
+}

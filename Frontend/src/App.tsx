@@ -2,6 +2,7 @@ import { NavLink, Route, Routes } from "react-router-dom";
 import "./app.css";
 import Main from "./components/pages/mainPage.tsx";
 import Bin from "./components/pages/binPage.tsx";
+import ErrorComponenterr from "./components/pages/ErrorComponent.tsx";
 
 export default function App() {
   return <>
@@ -9,6 +10,7 @@ export default function App() {
         <Route path="/main/:id" element={<Main/>} />
         <Route path="/main" element={<Main/>} />
         <Route path="/bin" element={<Bin/>} />
+        <Route path="*" element={<ErrorComponenterr/>}/>
       </Routes>
   </>
   ;
