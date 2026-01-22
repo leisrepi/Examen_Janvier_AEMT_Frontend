@@ -53,9 +53,7 @@ export default function FolderComponent({folderInfo, updateParent}: Props)  {
         if (childfoldersAndNotes.length > 0) {
             return;
         }
-        fetchChildItems();
-        
-        
+        fetchChildItems(); 
     }
     async function deleteFolderClick(){  
        /* if (!confirm("Voulez-vous vraiment supprimer ce dossier ?")) {
