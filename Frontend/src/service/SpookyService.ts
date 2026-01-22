@@ -138,3 +138,10 @@ export const getBinItems = async (): Promise<Item[]> => {
     }
     return finalItems;
 }
+export const exportFolderZip = async (folderId: number): Promise<Blob> => {
+    const response = await fetch(`${API_BASE_URL}/folder/${folderId}/export/zip`);
+    if (!response.ok) {
+        throw new Error("Erreur lors de l'export ZIP du dossier");
+    }
+    return await response.blob();
+}

@@ -7,7 +7,7 @@ import OpenNoteComponent from './openNoteComponent';
 import SpiderImage from "../assets/Spider.png";
 import coffinClosed from '../assets/coffin_closed.png';
 import coffinOpened from '../assets/coffin_opened.png';
-import {createFolder, getFolderChildreen, deleteFolder, updateFolder, createNote,exportAllZip} from '../service/SpookyService';
+import {createFolder, getFolderChildreen, deleteFolder, updateFolder, createNote,exportFolderZip} from '../service/SpookyService';
 
 
 
@@ -111,26 +111,26 @@ export default function FolderComponent({folderInfo, updateParent}: Props)  {
             { label: "Supprimer", onClick: () => deleteFolderClick() },
             { label: "Ajouter sous dossier", onClick: () => createFolder(folderInfo.idFolder).then(() => fetchChildItems()) },
             { label: "Ajouter note", onClick: () => createNote(folderInfo.idFolder, "", "").then(() => fetchChildItems()) },
-            {
-                label: "📦 Tout Exporter (ZIP)",
-                onClick: async () => {
-                    try {
-                        const blob = await exportAllZip();
-                        const url = window.URL.createObjectURL(blob);
-                        const a = document.createElement('a');
-                        a.href = url;
-                        a.download = "notes_spooky.zip";
-                        document.body.appendChild(a);
-                        a.click();
-                        a.remove();
-                        window.URL.revokeObjectURL(url);
-                    } catch (err) {
-                        console.error("Erreur ZIP", err);
-                        alert("Erreur lors de l'export ZIP !");
+            { 
+                    label: "📦 Exporter (ZIP)", 
+                    onClick: async () => {
+                        try {
+                            const blob = await exportFolderZip(folderInfo.idFolder);
+                            const url = window.URL.createObjectURL(blob);
+                            const a = document.createElement('a');
+                            a.href = url;
+                            a.download = `${folderInfo.nameFolder}.zip`;
+                            document.body.appendChild(a);
+                            a.click();
+                            a.remove();
+                            window.URL.revokeObjectURL(url);
+                        } catch (err) {
+                            console.error("Erreur ZIP dossier", err);
+                            alert("Impossible de zipper ce dossier effrayant !");
+                        }
+                        setMenuContextuel(null);
                     }
-                    setMenuContextuel(null);
                 }
-                },
             ],
             onClose: () => setMenuContextuel(null)
         });
