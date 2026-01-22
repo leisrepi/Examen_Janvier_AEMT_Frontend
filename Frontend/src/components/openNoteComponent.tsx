@@ -4,7 +4,7 @@ import MenuContextuelComponent from "./MenuContextuelComponent";
 import type { MenuContextuelProps } from "./MenuContextuelComponent";
 import { useContext } from "react";
 import {SpookyContext}  from "../contexts/SpookyContext";
-import {updateNote, deleteNote,exportNotePdf} from "../service/SpookyService";
+import {updateNote, deleteNote,exportNotePdf, getNoteById} from "../service/SpookyService";
 
 import parchment from "../assets/parchment.png";
 import './OpenNoteComponent.css';
@@ -33,6 +33,49 @@ export default function OpenNoteComponent({note, updateParent}: Props) {
       spookyContext.setUpdateNoteParentFolder(updateParent || (() => {}));
     }
   }, []);
+
+  async function remplacerLiensMarkdown(texte : string) : Promise<string> {
+    const regex = /\[([^\]]+)\]\(([^)]+)\)/g;
+    let match;
+    let nouveauTexte = texte;
+  
+    // Tableau pour stocker les promesses
+    const promesses = [];
+  
+    while ((match = regex.exec(texte)) !== null) {
+      const texteLien = match[1];
+      const url = match[2];
+      let numero = null;
+  
+      if (url.startsWith("http://localhost:5173")) {
+        const numMatch = url.match(/(\d+)$/);
+        if (numMatch) {
+          numero = parseInt(numMatch[1], 10);
+  
+          // Préparer la promesse pour remplacer le texte
+          promesses.push(
+            getNoteById(numero).then(note => {
+              // Remplacer dans le texte original
+              nouveauTexte = nouveauTexte.replace(
+                `[${texteLien}](${url})`,
+                `[${note.nameNote}](${url})`
+              );
+            }).catch((error) => {
+              console.error(`Erreur lors de la récupération de la note avec l'ID ${numero}:`, error);
+              nouveauTexte = nouveauTexte.replace(
+                `[${texteLien}](${url})`,
+                `[Note supprimer](${url})`
+              );
+            })
+          );
+        }
+      }
+    }
+    // Attendre que toutes les promesses soient terminées
+    await Promise.all(promesses);
+
+    return nouveauTexte;
+  }
 
   function renameNoteClick() {
     const newName = prompt("Entrez le nouveau nom de la note :", note.nameNote);
@@ -119,19 +162,24 @@ export default function OpenNoteComponent({note, updateParent}: Props) {
 
     };
 
+
+  async function loadFileOnEditor(){
+    note.contentNote = await remplacerLiensMarkdown(note.contentNote || "");
+    spookyContext.setOpenedNote(note);
+    spookyContext.setUpdateNoteParentFolder(updateParent || (() => {}));
+  }
+
   const openFile = async () => {
     if (spookyContext.openedNote) {
       if (spookyContext.editNoteSaveFunction) {
         await spookyContext.editNoteSaveFunction();
         await new Promise(resolve => setTimeout(resolve, 300));
         if (updateParent) updateParent();
-        spookyContext.setOpenedNote(note);
-        spookyContext.setUpdateNoteParentFolder(updateParent || (() => {}));
+        loadFileOnEditor();
         console.log("Saved current note before opening new one.");
       }
     }else{
-      spookyContext.setOpenedNote(note);
-      spookyContext.setUpdateNoteParentFolder(updateParent || (() => {}));
+      loadFileOnEditor();
     }
   }
 
