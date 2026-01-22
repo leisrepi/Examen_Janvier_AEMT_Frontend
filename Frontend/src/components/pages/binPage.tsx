@@ -45,19 +45,19 @@ export default function BinPage() {
       };
 
     return <>
-    <div className="MainDiv">
         <div>
             <BandeauComponent/>
         </div>
+    <div className="BinDiv">
         {menuContextuel && (
               <MenuContextuelComponent
                   position={menuContextuel.position}
                   actions={menuContextuel.actions}
                   onClose={() => setMenuContextuel(null)}
               />)}
-        <div>
-            <h2 onContextMenu={handleRightClickTitle}>Bin Page</h2>
-            <div>
+        <div className="binExplorer">
+            <h2 onContextMenu={handleRightClickTitle} style={{textAlign: "center", fontSize: "2.5rem"}}>Morgue</h2>
+            <div className="explorerContent">
                 {foldersAndNotes.map((item : Item) => {
                     if ("nameFolder" in item) {
                         let folder = item as Folder;
