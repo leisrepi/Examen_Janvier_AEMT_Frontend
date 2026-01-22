@@ -74,13 +74,40 @@ export default function OpenNoteComponent({note, updateParent}: Props) {
 
     };
 
-  
+  function formatDate(dateInput: string | Date): string {
+    // if not a date, we convert it too
+    if (dateInput == null){return ""}
+    const date = dateInput instanceof Date ? dateInput : new Date(dateInput)
+    
+
+    const datePart = date.toLocaleDateString('fr-FR', {
+      day: '2-digit',
+      month: '2-digit',
+      year: '2-digit'
+    });
+
+    const timePart = date.toLocaleTimeString('fr-FR', {
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit'
+    });
+
+    return `${datePart} ${timePart}`;
+  }
 
 
   return (
-    <div className="OpenNoteComponent">
+    <div className="OpenNoteComponent binComponent">
         {/* <h4 onContextMenu={handleRigOhtClick} onClick={openFile}><img className="coffinPic" src={parchment} alt="Coffin icon" /> {note.nameNote}</h4> */}
-        <h4 onContextMenu={handleRightClick}><img className="parchmentPic" src={parchment} alt="Coffin icon" /> {note.nameNote}</h4>
+        <h4 onContextMenu={handleRightClick}><img className="parchmentPic" src={parchment} alt="Coffin icon" />
+         {note.nameNote}
+         <div className="metaDataBin">
+          <p>Création : {formatDate(note.creationDateNote)} </p>
+          <p>Modification : {formatDate(note.lastModificationNote)} </p>
+          <p>Suppréssion : {formatDate(note.dateBinNote!)} </p>
+          </div>
+        </h4>
+        
         {menuContextuel && (
           <MenuContextuelComponent
             position={menuContextuel.position}

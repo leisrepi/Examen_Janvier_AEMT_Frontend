@@ -89,6 +89,26 @@ export default function FolderComponent({folderInfo, updateParent}: Props)  {
         });
     }
 
+    function formatDate(dateInput: string | Date): string {
+    // if not a date, we convert it too
+    if (dateInput == null){return ""}
+    const date = dateInput instanceof Date ? dateInput : new Date(dateInput)
+    
+
+    const datePart = date.toLocaleDateString('fr-FR', {
+      day: '2-digit',
+      month: '2-digit',
+      year: '2-digit'
+    });
+
+    const timePart = date.toLocaleTimeString('fr-FR', {
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit'
+    });
+
+    return `${datePart} ${timePart}`;
+  }
 
     return (
     <div className="FolderComponent">
@@ -101,6 +121,11 @@ export default function FolderComponent({folderInfo, updateParent}: Props)  {
         )}
         <h3 onContextMenu={handleRightClick}>
             <img className="coffinPic" src={coffinClosed} alt="Coffin Closed" /> {folderInfo.nameFolder}
+            <div className="metaDataBin">
+                <p>Création : {formatDate(folderInfo.creationDateFolder)} </p>
+                <p>Modification : {formatDate(folderInfo.lastModificationFolder)} </p>
+                <p>Suppréssion : {formatDate(folderInfo.dateBinFolder!)} </p>
+            </div>
         </h3>
         <img style={{left: `${spiderLeft}px`}} src={SpiderImage} alt="Image à déplacer" className="MonsterImage" />
         {folderOpen && childfoldersAndNotes.map((item : Item) => {

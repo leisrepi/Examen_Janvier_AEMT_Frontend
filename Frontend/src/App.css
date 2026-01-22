@@ -121,3 +121,33 @@ div.ExplorerDiv {
 }
 
 
+
+
+
+
+.binComponent h4 {
+  display: flex; /* Permet de mettre tout sur une ligne */
+  align-items: center; /* Aligne verticalement */
+  gap: 10px; /* Espacement entre les éléments */
+  white-space: nowrap; /* Empêche les retours à la ligne */
+  overflow: hidden; /* Évite le débordement */
+
+}
+
+.metaDataBin {
+  display: inline-flex;
+  flex-direction: row; /* On garde l'ordre normal */
+  margin-left: auto; /* Pousse les métadonnées à droite si tu veux */
+  width: auto !important; /* Ne prend que la place nécessaire */
+  flex-shrink: 0;
+
+}
+
+.metaDataBin p {
+  font-family: Arial, sans-serif;
+  color: white;
+  font-size: medium;
+  padding: 0 5px;
+  white-space: nowrap; /* Évite le retour à la ligne */
+}
+
