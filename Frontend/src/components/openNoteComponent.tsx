@@ -4,7 +4,7 @@ import MenuContextuelComponent from "./MenuContextuelComponent";
 import type { MenuContextuelProps } from "./MenuContextuelComponent";
 import { useContext } from "react";
 import {SpookyContext}  from "../contexts/SpookyContext";
-import {updateNote, deleteNote} from "../service/SpookyService";
+import {updateNote, deleteNote,exportNotePdf} from "../service/SpookyService";
 
 import parchment from "../assets/parchment.png";
 import './OpenNoteComponent.css';
@@ -77,17 +77,7 @@ export default function OpenNoteComponent({note, updateParent}: Props) {
         }
     });
 
-    //supprésion réelle
-    /*deleteNote(note.idNote).then(() => {
-        // Retirer la note de l'état global ou du contexte
-        alert("Note supprimée avec succès.");
-        if (updateParent){
-          updateParent();
-        }
-    });*/
   }
-  
-    //TODO afficher erreur si le nom est invalide
 
   /*Menu contextuel*/
   const [menuContextuel, setMenuContextuel] = useState<MenuContextuelProps | null>(null);
@@ -103,6 +93,26 @@ export default function OpenNoteComponent({note, updateParent}: Props) {
             actions: [
             { label: "Renommer", onClick: () => renameNoteClick() },
             { label: "Supprimer", onClick: () => deleteNoteClick() },
+             { 
+                    label: "📄 Exporter PDF", 
+                    onClick: async () => {
+                        try {
+                            const blob = await exportNotePdf(note.idNote);
+                            const url = window.URL.createObjectURL(blob);
+                            const a = document.createElement('a');
+                            a.href = url;
+                            a.download = `${note.nameNote}.pdf`;
+                            document.body.appendChild(a);
+                            a.click();
+                            a.remove();
+                            window.URL.revokeObjectURL(url);
+                        } catch (err) {
+                            console.error("Erreur PDF", err);
+                            alert("Impossible de générer le PDF !");
+                        }
+                        setMenuContextuel(null);
+                    } 
+                },
             ],
             onClose: () => setMenuContextuel(null)
         });

@@ -143,7 +143,7 @@ const NoteComponent: React.FC<NoteComponentProps> = ({ note, updateParent }) => 
           ref={editorRef}
           markdown={currentContent} // Valeur initiale
           readOnly={!isEditing}
-          onChange={debouncedUpdate} // ICI : On utilise la version optimisée
+          onChange={debouncedUpdate} // Utilisation de la fonction debouncée
           contentEditableClassName="spooky-editor-content"
           plugins={[
             headingsPlugin(),

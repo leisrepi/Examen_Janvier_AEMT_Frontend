@@ -7,7 +7,7 @@ import OpenNoteComponent from './openNoteComponent';
 import SpiderImage from "../assets/Spider.png";
 import coffinClosed from '../assets/coffin_closed.png';
 import coffinOpened from '../assets/coffin_opened.png';
-import {createFolder, getFolderChildreen, deleteFolder, updateFolder, createNote} from '../service/SpookyService';
+import {createFolder, getFolderChildreen, deleteFolder, updateFolder, createNote,exportAllZip} from '../service/SpookyService';
 
 
 
@@ -28,12 +28,6 @@ interface Props {
 export default function FolderComponent({folderInfo, updateParent}: Props)  {
     const [childfoldersAndNotes, setChildFoldersAndNotes] = useState<Item[]>([]);
     const [folderName, setFolderName] = useState<string>(folderInfo.nameFolder);
-    /*const [childfoldersAndNotes, setChildFoldersAndNotes] = useState<Item[]>([
-        { idFolder: 1, nameFolder: "Work", idParent: 0 },
-        { idFolder: 2, nameFolder: "Personal", idParent: 0 },
-        { idNote: 1, nameNote: "Meeting Notes", contentNote: "Discuss project timeline", creationDateNote: new Date(), lastModificationNote: new Date(), idFolder: 1 },
-    ]);*/
-
     const [spiderLeft, setSpiderLeft] = useState<number>(0);
     const [folderOpen, setFolderOpen] = useState<boolean>(false);
     const [menuContextuel, setMenuContextuel] = useState<MenuContextuelProps | null>(null);
@@ -48,7 +42,6 @@ export default function FolderComponent({folderInfo, updateParent}: Props)  {
 
     function fetchChildItems(){
         getFolderChildreen(folderInfo.idFolder).then((items : Item[]) => {
-            //setChildFoldersAndNotes([...items]);
             setChildFoldersAndNotes(items.map(item => ({ ...item })));
             console.log("Fetched child items:");
             console.log(items);
@@ -118,6 +111,26 @@ export default function FolderComponent({folderInfo, updateParent}: Props)  {
             { label: "Supprimer", onClick: () => deleteFolderClick() },
             { label: "Ajouter sous dossier", onClick: () => createFolder(folderInfo.idFolder).then(() => fetchChildItems()) },
             { label: "Ajouter note", onClick: () => createNote(folderInfo.idFolder, "", "").then(() => fetchChildItems()) },
+            {
+                label: "📦 Tout Exporter (ZIP)",
+                onClick: async () => {
+                    try {
+                        const blob = await exportAllZip();
+                        const url = window.URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = "notes_spooky.zip";
+                        document.body.appendChild(a);
+                        a.click();
+                        a.remove();
+                        window.URL.revokeObjectURL(url);
+                    } catch (err) {
+                        console.error("Erreur ZIP", err);
+                        alert("Erreur lors de l'export ZIP !");
+                    }
+                    setMenuContextuel(null);
+                }
+                },
             ],
             onClose: () => setMenuContextuel(null)
         });
