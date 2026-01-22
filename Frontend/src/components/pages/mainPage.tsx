@@ -76,8 +76,8 @@ export function AppContent() {
 
       
       {/* Barre latérale */}
-      <div className="ExplorerDiv" style={{ visibility: spookyContext.loadedPage === "noteView" ? "visible" : "hidden" }}>
-        <h2 className='explorateurTitle' onContextMenu={handleRightClickExplorerDiv}>Explorateur</h2>
+      <div className="ExplorerDiv"  onContextMenu={handleRightClickExplorerDiv} style={{ visibility: spookyContext.loadedPage === "noteView" ? "visible" : "hidden" }}>
+        <h2 className='explorateurTitle'>Explorateur</h2>
         <div className="explorerContent">
           {foldersAndNotes.map((item : Item) => {
             if ("nameFolder" in item) {

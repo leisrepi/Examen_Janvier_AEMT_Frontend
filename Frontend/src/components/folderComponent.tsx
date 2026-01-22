@@ -98,6 +98,7 @@ export default function FolderComponent({folderInfo, updateParent}: Props)  {
 
     const handleRightClick = (event) => {
         event.preventDefault(); // Empêche le menu contextuel par défaut
+        event.stopPropagation(); 
         if (menuContextuel) {
             return; 
         }

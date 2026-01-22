@@ -127,6 +127,7 @@ export default function OpenNoteComponent({note, updateParent}: Props) {
   
   const handleRightClick = (event) => {
         event.preventDefault(); // Empêche le menu contextuel par défaut
+        event.stopPropagation(); 
         if (menuContextuel) {
             return; // Si le menu est déjà ouvert, ne rien faire
         }
