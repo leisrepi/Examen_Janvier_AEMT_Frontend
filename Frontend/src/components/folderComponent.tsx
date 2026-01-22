@@ -19,25 +19,39 @@ export type Item = Folder | Note;
 interface Props {
     folderInfo: Folder;
     updateParent? : () => void;
+    childIdForAutoOpen: number[];
 }
 
 
 
 
 
-export default function FolderComponent({folderInfo, updateParent}: Props)  {
+export default function FolderComponent({folderInfo, updateParent, childIdForAutoOpen}: Props)  {
     const [childfoldersAndNotes, setChildFoldersAndNotes] = useState<Item[]>([]);
     const [folderName, setFolderName] = useState<string>(folderInfo.nameFolder);
     const [spiderLeft, setSpiderLeft] = useState<number>(0);
     const [folderOpen, setFolderOpen] = useState<boolean>(false);
     const [menuContextuel, setMenuContextuel] = useState<MenuContextuelProps | null>(null);
-
+    const [childIdForAutoOpenDestinedToChildreen, setChildIdForAutoOpenDestinedToCHildreen] = useState<number[]>([]);
 
     useEffect(() => {
         setSpiderLeft(5 + Math.random() * 100);
         setFolderName(folderInfo.nameFolder);
         console.log(spiderLeft);
     }, []);
+
+    useEffect(() => {
+        console.log(childIdForAutoOpen);
+        if (childIdForAutoOpen == null) {console.log("not childId"); return;}
+        if (childIdForAutoOpen.shift() == folderInfo.idFolder){
+            console.log("apres avoir retirer premier element ")
+            console.log(childIdForAutoOpen);
+            setChildIdForAutoOpenDestinedToCHildreen([...childIdForAutoOpen]);
+            setFolderOpen(true);
+            fetchChildItems();
+            console.log("folder opened : ",folderInfo.idFolder);
+        }
+    }, [childIdForAutoOpen])
 
 
     function fetchChildItems(){
@@ -154,7 +168,7 @@ export default function FolderComponent({folderInfo, updateParent}: Props)  {
         {folderOpen && childfoldersAndNotes.map((item : Item) => {
                 if ("nameFolder" in item) {
                     let folder = item as Folder;
-                    return <FolderComponent key={`folder-${folder.idFolder}`} folderInfo={folder} updateParent={fetchChildItems} />;
+                    return <FolderComponent key={`folder-${folder.idFolder}`} childIdForAutoOpen={childIdForAutoOpenDestinedToChildreen} folderInfo={folder} updateParent={fetchChildItems} />;
                 }else{
                     let note = item as Note;
                     return <OpenNoteComponent key={`note-${note.idNote}`} note={note} updateParent={fetchChildItems} />;

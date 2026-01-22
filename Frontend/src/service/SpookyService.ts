@@ -58,6 +58,11 @@ export const getNoteById = async (noteId: number): Promise<Note> => {
     return response.data;
 }
 
+export const getFolderById = async (folderId: number): Promise<Folder> => {
+    const response = await axios.get<Folder>(`${API_BASE_URL}/folder/${folderId}`);
+    return response.data;
+}
+
 export const createFolder = async (id : number|null): Promise<Folder> => {
     const response = await axios.post<Folder>(`${API_BASE_URL}/folder`, {
         "nameFolder": "Nouveau dossier",

@@ -6,7 +6,7 @@ import type { Item } from '../../service/SpookyService';
 import OpenNoteComponent from '../../components/openNoteComponent';
 import type { Note } from '../../types/Note';
 import type { Folder } from '../../types/Folder';
-import { createNote, createFolder, getAllFolders, getNoteById} from '../../service/SpookyService';
+import { createNote, createFolder, getAllFolders, getNoteById, getFolderById} from '../../service/SpookyService';
 import type { MenuContextuelProps } from '../../components/MenuContextuelComponent';
 import MenuContextuelComponent from '../../components/MenuContextuelComponent';
 import BandeauComponent from '../../components/bandeau/BandeauComponent';
@@ -21,6 +21,7 @@ export function AppContent() {
   const {openedNote} = useSpooky();
   const [foldersAndNotes, setFoldersAndNotes] = useState<Item[]>([]);
   const [menuContextuel, setMenuContextuel] = useState<MenuContextuelProps | null>(null);
+  const [childIdForAutoOpenDestinedToChildreen, setChildIdForAutoOpenDestinedToChildreen] = useState<Number[]>([]);
 
   const spookyContext = useContext(SpookyContext);
   if (!spookyContext) return null; // Security if context is not available
@@ -32,11 +33,34 @@ export function AppContent() {
     });
   }
 
+  async function openFolderTree(actualOpenNote : Note){
+    /*open the childreen folder : */
+    /*getting all the parent : */
+    if (!actualOpenNote) {console.log("no note open"); return}
+
+    let chilId = [Number(actualOpenNote.idFolder)];
+    let parentFolder : Folder;
+    let nextId : number | null =  Number(actualOpenNote.idFolder);
+    //console.log("next id ", nextId);
+    do{
+      
+      parentFolder = await getFolderById(nextId);
+      nextId = parentFolder.idParent;
+      //console.log("next id ", nextId);
+      if (nextId){
+        chilId.unshift(nextId);
+      }
+    }while (nextId != null);
+    console.log(chilId.toString());
+    setChildIdForAutoOpenDestinedToChildreen(chilId);
+  }
+
   useEffect(() => {
     fetchChildItems();
     if (id) {
       getNoteById(Number(id)).then((note: Note) => {
         spookyContext.setOpenedNote(note);
+        openFolderTree(note);
       });
     }
   }, []);
@@ -81,7 +105,7 @@ export function AppContent() {
           {foldersAndNotes.map((item : Item) => {
             if ("nameFolder" in item) {
                 let folder = item as Folder;
-                return <FolderComponent key={folder.idFolder} folderInfo={folder} updateParent={fetchChildItems}/>;
+                return <FolderComponent key={folder.idFolder} childIdForAutoOpen={childIdForAutoOpenDestinedToChildreen}  folderInfo={folder} updateParent={fetchChildItems}/>;
             }else{
                 let note = item as Note;
                 return <OpenNoteComponent key={note.idNote} note={note} updateParent={fetchChildItems} />;
