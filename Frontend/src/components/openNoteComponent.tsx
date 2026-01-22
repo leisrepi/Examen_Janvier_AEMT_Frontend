@@ -129,10 +129,10 @@ export default function OpenNoteComponent({note, updateParent}: Props) {
             position: { x: event.pageX - 10, y: event.pageY - 10},
             actions: [
             { label: "Renommer", onClick: () => renameNoteClick() },
-            { label: "Supprimer", onClick: () => deleteNoteClick() },
+            { label: "Sacrifier (supprimer)", onClick: () => deleteNoteClick() },
             { label: "Copier lien", onClick: () => getLinkOfNote() },
              { 
-                    label: "📄 Exporter PDF", 
+                    label: "Exporter PDF", 
                     onClick: async () => {
                         try {
                             const blob = await exportNotePdf(note.idNote);

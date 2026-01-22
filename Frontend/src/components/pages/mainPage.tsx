@@ -75,9 +75,9 @@ export function AppContent() {
     setMenuContextuel({
       position: { x: event.pageX - 10, y: event.pageY - 10},
       actions: [
-        { label: "Ajouter Dossier", onClick: () => createFolder(null).then(() => fetchChildItems()) },
-        { label: "Ajouter Note", onClick: () => createNote(null , "", "").then(() => fetchChildItems()) },
-        { label: "Ouvrir Morgue", onClick: () => navigate('/bin') },
+        { label: "Ajouter un dossier", onClick: () => createFolder(null).then(() => fetchChildItems()) },
+        { label: "Ajouter une note", onClick: () => createNote(null , "", "").then(() => fetchChildItems()) },
+        { label: "Allez a la Morgue (corbeille)", onClick: () => navigate('/bin') },
       ],
       onClose: () => setMenuContextuel(null)
     });

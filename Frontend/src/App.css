@@ -135,6 +135,7 @@ div.ExplorerDiv {
 }
 
 .metaDataBin {
+  padding-left: 20px;
   display: inline-flex;
   flex-direction: row; /* On garde l'ordre normal */
   margin-left: auto; /* Pousse les métadonnées à droite si tu veux */

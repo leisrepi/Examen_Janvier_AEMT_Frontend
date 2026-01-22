@@ -109,11 +109,11 @@ export default function FolderComponent({folderInfo, updateParent, childIdForAut
             position: { x: event.pageX - 10, y: event.pageY - 10},
             actions: [
             { label: "Renommer", onClick: () => renameFolderClick() },
-            { label: "Supprimer", onClick: () => deleteFolderClick() },
+            { label: "Sacrifier (supprimer)", onClick: () => deleteFolderClick() },
             { label: "Ajouter sous dossier", onClick: () => createFolder(folderInfo.idFolder).then(() => fetchChildItems()) },
             { label: "Ajouter note", onClick: () => createNote(folderInfo.idFolder, "", "").then(() => fetchChildItems()) },
             { 
-                    label: "📦 Exporter (ZIP)", 
+                    label: "Sceller (exporter ZIP)", 
                     onClick: async () => {
                         try {
                             const blob = await exportFolderZip(folderInfo.idFolder);

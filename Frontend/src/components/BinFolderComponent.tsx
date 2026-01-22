@@ -73,8 +73,8 @@ export default function FolderComponent({folderInfo, updateParent}: Props)  {
         setMenuContextuel({
             position: { x: event.pageX - 10, y: event.pageY - 10},
             actions: [
-            { label: "Supprimer", onClick: () => deleteFolderClick() },
-            { label: "Restaurer", onClick: () => restoreFolderClick() },
+            { label: "Enterrer (supprimer)", onClick: () => deleteFolderClick() },
+            { label: "Ressusciter (restaurer)", onClick: () => restoreFolderClick() },
             ],
             onClose: () => setMenuContextuel(null)
         });
@@ -124,7 +124,7 @@ export default function FolderComponent({folderInfo, updateParent}: Props)  {
             <div className="metaDataBin">
                 <p>Création : {formatDate(folderInfo.creationDateFolder)} </p>
                 <p>Modification : {formatDate(folderInfo.lastModificationFolder)} </p>
-                <p>Suppréssion : {formatDate(folderInfo.dateBinFolder!)} </p>
+                <p>Suppression : {formatDate(folderInfo.dateBinFolder!)} </p>
             </div>
         </h3>
         <img style={{left: `${spiderLeft}px`}} src={SpiderImage} alt="Image à déplacer" className="MonsterImage" />

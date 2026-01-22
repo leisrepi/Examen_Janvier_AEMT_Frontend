@@ -66,8 +66,8 @@ export default function OpenNoteComponent({note, updateParent}: Props) {
         setMenuContextuel({
             position: { x: event.pageX - 10, y: event.pageY - 10},
             actions: [
-            { label: "Supprimer", onClick: () => deleteNoteClick() },
-            { label: "Restaurer", onClick: () => restoreNoteClick() },
+            { label: "Enterrer (supprimer)", onClick: () => deleteNoteClick() },
+            { label: "Ressusciter (restaurer)", onClick: () => restoreNoteClick() },
             ],
             onClose: () => setMenuContextuel(null)
         });
@@ -104,7 +104,7 @@ export default function OpenNoteComponent({note, updateParent}: Props) {
          <div className="metaDataBin">
           <p>Création : {formatDate(note.creationDateNote)} </p>
           <p>Modification : {formatDate(note.lastModificationNote)} </p>
-          <p>Suppréssion : {formatDate(note.dateBinNote!)} </p>
+          <p>Suppression : {formatDate(note.dateBinNote!)} </p>
           </div>
         </h4>
         
