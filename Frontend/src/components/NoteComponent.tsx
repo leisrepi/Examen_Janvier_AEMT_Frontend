@@ -129,6 +129,16 @@ const NoteComponent: React.FC<NoteComponentProps> = ({ noteData, updateParent })
     console.log(handleSave);
   },[]);
 
+  const handleMarkdownClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    if (isEditing) return;
+    const target = event.target as HTMLElement | null;
+    const link = target?.closest("a");
+    const href = link?.getAttribute("href");
+    if (!href) return;
+    event.preventDefault();
+    window.location.assign(href);
+  };
+
   return (
     <div className="noteDiv">
       <h2 style={{ textAlign: "center", margin: "0px"}}>📓 {isEditing ? "Mode Écriture" : "Mode Lecture"}</h2>
@@ -141,7 +151,7 @@ const NoteComponent: React.FC<NoteComponentProps> = ({ noteData, updateParent })
         style={{ width: "100%", marginBottom: "10px", padding: "5px", fontSize: "1.2em" }}
       />
 
-      <div className="markdown-body">
+      <div className="markdown-body" onClick={handleMarkdownClick}>
         <MDXEditor
           ref={editorRef}
           markdown={currentContent} // Valeur initiale

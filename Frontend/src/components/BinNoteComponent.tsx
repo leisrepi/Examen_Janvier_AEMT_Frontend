@@ -55,6 +55,14 @@ export default function OpenNoteComponent({note, updateParent}: Props) {
     });
   }
 
+  function openFolder(){
+    setFolderOpen(!folderOpen);
+    if (childfoldersAndNotes.length > 0) {
+        return;
+    }
+    fetchChildItems(); 
+  }
+
   /*Menu contextuel*/
   const [menuContextuel, setMenuContextuel] = useState<MenuContextuelProps | null>(null);
   
