@@ -86,7 +86,7 @@ export default function FolderComponent({folderInfo, updateParent}: Props)  {
     }
 
     function renameFolderClick(){
-        const info = prompt("Veuillez entrer un nouveau nom :");
+        const info = prompt("Veuillez entrer un nouveau nom :", folderInfo.nameFolder);
         if (info) {
             console.log("Nom saisi :", info);
             if (!info.trim()) {
