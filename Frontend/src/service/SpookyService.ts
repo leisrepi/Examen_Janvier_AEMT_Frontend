@@ -20,7 +20,7 @@ const API_BASE_URL = 'http://localhost:8080/spooky-api';
 
 export const getAllFolders = async (): Promise<Item[]> => {
     const response = await axios.get(`${API_BASE_URL}/folder`);
-    console.log('Fetched folders:', response.data);
+    //console.log('Fetched folders:', response.data);
    
     let listNote = response.data.orphanNotes as Note[];
     let listFolder = response.data.folders as Folder[];
@@ -43,11 +43,11 @@ export const getNotesInFolder = async (folderId: number): Promise<Note[]> => {
 }
 // returns the children files and notes of a file
 export const getFolderChildreen = async (folderId: number): Promise<Item[]> => {
-    console.log(`Fetching children of folder ID: ${folderId}`);
+    //console.log(`Fetching children of folder ID: ${folderId}`);
     const url = `${API_BASE_URL}/folder/${folderId}`;
-    console.log(`Constructed URL: ${url}`);
+    //console.log(`Constructed URL: ${url}`);
     const response = await axios.get<FolderResponse>(url);
-    console.log('Response data:', response.data);
+    //console.log('Response data:', response.data);
     let listNote = response.data.notes as Note[];
     let listFolder = response.data.SousDossier as Folder[];
     return [...listNote, ...listFolder];
@@ -79,14 +79,14 @@ export const createNote = async (folderId: number | null, nameNote: string, cont
 
 
 export const updateNote = async (note: Note): Promise<Note> => {
-    console.log(note);
+    //console.log(note);
     const response = await axios.put<Note>(`${API_BASE_URL}/note/${note.idNote}`, {
         nameNote : note.nameNote,
         contentNote : note.contentNote,
         idFolder: note.idFolder,
     });
-    console.log('Updated note:');
-    console.log(response.data);
+    //console.log('Updated note:');
+    //console.log(response.data);
     return response.data;
 };
 
@@ -127,7 +127,7 @@ export const deleteFolder = async (folderId: number): Promise<void> => {
     await axios.delete(`${API_BASE_URL}/folder/${folderId}`);
 
     } catch (error: any) {
-    console.error("Erreur Axios :", error.response);
+    //console.error("Erreur Axios :", error.response);
     }
 }
 export const exportAllZip = async (): Promise<Blob> => {
@@ -148,7 +148,7 @@ export const exportNotePdf = async (id: number): Promise<Blob> => {
 
 export const getBinItems = async (): Promise<Item[]> => {
     const response = await axios.get(`${API_BASE_URL}/bin`);
-    console.log('Fetched bin items:', response.data);
+   // console.log('Fetched bin items:', response.data);
 
     let listNote = response.data.orphanNotes as Note[];
     let listFolder = response.data.folders as Folder[];

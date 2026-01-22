@@ -102,10 +102,6 @@ export default function OpenNoteComponent({note, updateParent}: Props) {
   }
 
   function deleteNoteClick() {
-    /*const confirmDelete = window.confirm(`Êtes-vous sûr de vouloir supprimer la note "${note.nameNote}" ?`);
-    if (!confirmDelete) {
-      return; 
-    }*/
     if (spookyContext.openedNote?.idNote === note.idNote) {
       spookyContext.setOpenedNote(null); 
     }

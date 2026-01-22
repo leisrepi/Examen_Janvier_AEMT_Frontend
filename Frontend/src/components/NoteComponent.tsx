@@ -39,7 +39,7 @@ const NoteComponent: React.FC<NoteComponentProps> = ({ noteData, updateParent })
   const [note, setNote] = useState<Note>(noteData);
 
   const spookyContext = useContext(SpookyContext);
-  if (!spookyContext) return null; // Sécurité si le contexte est null
+  if (!spookyContext) return null; // security if the context is null
   
   // Current content (for backup)
   const [currentContent, setCurrentContent] = useState(note.contentNote || "");
@@ -132,7 +132,7 @@ async function remplacerLiensMarkdown(texte : string) : Promise<string> {
       // Remove backslashes
       const cleanMarkdown = newMarkdown.replace(/\\/g, '');
 
-      // Met à jour le state local
+      // Update the local state
       setCurrentContent(cleanMarkdown);
 
       
@@ -171,12 +171,12 @@ async function remplacerLiensMarkdown(texte : string) : Promise<string> {
     await updateExistingNote(updatedNote);
     setNote(updatedNote); // Updates the local note
     updateNoteParent();
-    console.log("Note saved:", updatedNote);
+    //console.log("Note saved:", updatedNote);
   };
 
   useEffect(() => {
     spookyContext.setEditNoteSaveFunction(handleSave);
-    console.log(handleSave);
+    //console.log(handleSave);
   },[]);
 
   function getLinkOfNote(){
@@ -184,7 +184,7 @@ async function remplacerLiensMarkdown(texte : string) : Promise<string> {
     let link = "["+note.nameNote+"](" + window.location.origin + "/main/" + note.idNote + ")";
     navigator.clipboard.writeText(link)
     .then(() => {
-      console.log("Texte copié !");
+      //console.log("Texte copié !");
     })
     .catch(err => {
       console.error("Erreur lors de la copie :", err);
