@@ -130,7 +130,14 @@ async function remplacerLiensMarkdown(texte : string) : Promise<string> {
   const debouncedUpdate = useMemo(() => {
     return (newMarkdown: string) => {
       // On met à jour le state local (rapide)
-      setCurrentContent(newMarkdown);
+
+      // Supprimer les backslashes
+      const cleanMarkdown = newMarkdown.replace(/\\/g, '');
+
+      // Met à jour le state local
+      setCurrentContent(cleanMarkdown);
+
+      
       
       // On retarde le calcul lourd (les métadonnées)
       // Pour éviter d'installer lodash, on utilise un simple timeout ici
@@ -173,6 +180,19 @@ async function remplacerLiensMarkdown(texte : string) : Promise<string> {
     spookyContext.setEditNoteSaveFunction(handleSave);
     console.log(handleSave);
   },[]);
+
+  function getLinkOfNote(){
+
+    let link = "["+note.nameNote+"](" + window.location.origin + "/main/" + note.idNote + ")";
+    navigator.clipboard.writeText(link)
+    .then(() => {
+      console.log("Texte copié !");
+    })
+    .catch(err => {
+      console.error("Erreur lors de la copie :", err);
+    });
+
+  }
 
   return (
     <div className="noteDiv">
@@ -229,6 +249,13 @@ async function remplacerLiensMarkdown(texte : string) : Promise<string> {
         <button onClick={() => setIsEditing(!isEditing)}>
           {isEditing ? "👁️ Mode Lecture" : "✏️ Mode Écriture"}
         </button>
+        <button onClick={() => getLinkOfNote()}>Copier lien vers note</button>
+        {/* No need for save button --> auto save
+            No need for delete button --> dedicated menu */}
+        {/* {isEditing && <button onClick={handleSave}>💾 Enregistrer</button>} */}
+        {/* <button onClick={() => removeNote(note.idNote)} style={{ backgroundColor: "#ff4d4d", color: "white" }}>
+          🗑 Supprimer
+        </button> */}
       </div>
 
       <div className="metadata" style={{ marginTop: "15px", fontSize: "14px", color: "#555", borderTop: "1px solid #eee", paddingTop: "10px" }}>
