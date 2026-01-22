@@ -3,9 +3,10 @@ div.MenuContextuelComponent {
     padding: 0;
     z-index: 1000;
     position: fixed;
-    background-color: white;
+    background-color: #d6a360;
     border: 2px solid black;
     border-radius: 10px;
+    color: black
 }
 
 div.MenuContextuelComponent ul {

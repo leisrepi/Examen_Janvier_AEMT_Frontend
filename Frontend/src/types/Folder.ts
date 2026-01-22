@@ -3,5 +3,9 @@ export interface Folder{
     idFolder: number;
     nameFolder: string;
     idParent : number | null;
-    
+    toBin : boolean;
+    dateBinFolder : Date | null;
+    creationDateFolder : Date;
+    lastModificationFolder : Date;
+
 }

@@ -5,4 +5,6 @@ export interface Note{
     creationDateNote: Date;
     lastModificationNote: Date;
     idFolder: number | null;
+    toBin : boolean;
+    dateBinNote : Date | null;
 }

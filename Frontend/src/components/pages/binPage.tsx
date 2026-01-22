@@ -1,0 +1,74 @@
+
+import BandeauComponent from "../../components/bandeau/BandeauComponent";
+import { useState } from "react";
+import type { Item } from "../folderComponent";
+import {getBinItems} from "../../service/SpookyService";
+import type { Note } from "../../types/Note";
+import type { Folder } from "../../types/Folder";
+import BinFolderComponent from "../BinFolderComponent";
+import BinNoteComponent from "../BinNoteComponent";
+import type { MenuContextuelProps } from "../MenuContextuelComponent";
+import MenuContextuelComponent from "../MenuContextuelComponent";
+import { useNavigate } from "react-router";
+
+export default function BinPage() {
+    const navigate = useNavigate();
+    const [foldersAndNotes, setFoldersAndNotes] = useState<Item[]>([]);
+    const [menuContextuel, setMenuContextuel] = useState<MenuContextuelProps | null>(null);
+  
+    useState(() => {
+        fetchBinItems();
+    });
+
+    function fetchBinItems() {
+        getBinItems().then((items : Item[]) => {
+            setFoldersAndNotes([...items]);
+            console.log(foldersAndNotes);
+        });
+    }
+
+    const handleRightClickTitle = (event) => {
+        event.preventDefault(); // Prevents the default context menu
+        console.log("right click explorer div");
+        if (menuContextuel) {
+          return; // If menu is already open, do nothing
+        }
+        
+        setMenuContextuel({
+          position: { x: event.pageX - 10, y: event.pageY - 10},
+          actions: [
+            { label: "Retourne au note", onClick: () => navigate('/main') },
+          ],
+          onClose: () => setMenuContextuel(null)
+        });
+    
+      };
+
+    return <>
+        <div>
+            <BandeauComponent/>
+        </div>
+    <div className="BinDiv">
+        {menuContextuel && (
+              <MenuContextuelComponent
+                  position={menuContextuel.position}
+                  actions={menuContextuel.actions}
+                  onClose={() => setMenuContextuel(null)}
+              />)}
+        <div className="binExplorer" onContextMenu={handleRightClickTitle} >
+            <h2 style={{textAlign: "center", fontSize: "2.5rem"}}>Morgue</h2>
+            <div className="explorerContent">
+                {foldersAndNotes.map((item : Item) => {
+                    if ("nameFolder" in item) {
+                        let folder = item as Folder;
+                        return <BinFolderComponent key={folder.idFolder} folderInfo={folder} updateParent={fetchBinItems}/>;
+                    }else{
+                        let note = item as Note;
+                        return <BinNoteComponent key={note.idNote} note={note} updateParent={fetchBinItems} />;
+                    }
+                })}
+            </div>
+        </div>
+    </div>
+    </>
+}

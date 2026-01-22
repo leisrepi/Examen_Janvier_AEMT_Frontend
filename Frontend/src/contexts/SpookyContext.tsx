@@ -9,6 +9,7 @@ import {
 } from '../service/SpookyService';
 import type { Folder } from '../types/Folder';
 import type { Note } from '../types/Note';
+import { useNavigate } from 'react-router';
 
 
 interface SpookyContextType {
@@ -27,6 +28,8 @@ interface SpookyContextType {
   removeNote: (id: number) => Promise<void>;
   setEditNoteSaveFunction: (fn: () => void) => void;
   editNoteSaveFunction: () => void;
+  loadedPage: string;
+  setLoadedPage: (page: string) => void;
 }
 
 
@@ -34,10 +37,16 @@ interface SpookyContextType {
 export const SpookyContext = createContext<SpookyContextType | undefined>(undefined);
 
 export const SpookyProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const navigate = useNavigate();
   const [folders, setFolders] = useState<Folder[]>([]);
   const [openedNote, setOpenedNote] = useState<Note | null>(null);
+  const [loadedPage, setLoadedPage] = useState<string>("noteView");
   const explorerRefreshRef = useRef<() => void>(() => {});
 
+
+  useEffect(() => {
+    navigate('/main/' + (openedNote?.idNote || ''), { replace: false });
+  }, [openedNote]);
 
   const editNoteSaveFunctionRef = useRef<() => void>(() => {});
 
@@ -82,11 +91,6 @@ const addFolder = async (parentId: number) => {
   await refreshFolders();
 };
 
-  /*const addFolder = async (name: string) => {
-    await createFolder(name);
-    await refreshFolders();
-  };
-*/
   const removeFolder = async (id: number) => {
     await deleteFolder(id);
     await refreshFolders();
@@ -125,6 +129,8 @@ const addFolder = async (parentId: number) => {
         updateNoteParentFolder,
         setEditNoteSaveFunction,
         editNoteSaveFunction,
+        loadedPage,
+        setLoadedPage,
       }}
     >
       {children}

@@ -11,12 +11,17 @@
   background-color: #fed199;
   padding: 5px;
   border : 1px solid black;
+
+  /* Addition to truncate text without changing width */
+  white-space: nowrap;        /* Prevents line break */
+  overflow: hidden;           /* Hides overflowing text */
+  text-overflow: ellipsis;    /* Adds "..." at the end */
+  display: block;             /* Or inline-block if necessary */
 }
 
 .FolderComponent h3:hover, .OpenNoteComponent h4:hover {
   background-color: #ef8f00;
   cursor: pointer;
-  
 }
 
 .FolderComponent h3:hover + .MonsterImage {

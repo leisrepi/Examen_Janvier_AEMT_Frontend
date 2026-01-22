@@ -7,7 +7,7 @@ import OpenNoteComponent from './openNoteComponent';
 import SpiderImage from "../assets/Spider.png";
 import coffinClosed from '../assets/coffin_closed.png';
 import coffinOpened from '../assets/coffin_opened.png';
-import {createFolder, getFolderChildreen, deleteFolder, updateFolderName, createNote} from '../service/SpookyService';
+import {createFolder, getFolderChildreen, restoreFromBin, updateFolder, createNote,exportFolderZip, moveToBin} from '../service/SpookyService';
 
 
 
@@ -28,12 +28,6 @@ interface Props {
 export default function FolderComponent({folderInfo, updateParent}: Props)  {
     const [childfoldersAndNotes, setChildFoldersAndNotes] = useState<Item[]>([]);
     const [folderName, setFolderName] = useState<string>(folderInfo.nameFolder);
-    /*const [childfoldersAndNotes, setChildFoldersAndNotes] = useState<Item[]>([
-        { idFolder: 1, nameFolder: "Work", idParent: 0 },
-        { idFolder: 2, nameFolder: "Personal", idParent: 0 },
-        { idNote: 1, nameNote: "Meeting Notes", contentNote: "Discuss project timeline", creationDateNote: new Date(), lastModificationNote: new Date(), idFolder: 1 },
-    ]);*/
-
     const [spiderLeft, setSpiderLeft] = useState<number>(0);
     const [folderOpen, setFolderOpen] = useState<boolean>(false);
     const [menuContextuel, setMenuContextuel] = useState<MenuContextuelProps | null>(null);
@@ -48,7 +42,6 @@ export default function FolderComponent({folderInfo, updateParent}: Props)  {
 
     function fetchChildItems(){
         getFolderChildreen(folderInfo.idFolder).then((items : Item[]) => {
-            //setChildFoldersAndNotes([...items]);
             setChildFoldersAndNotes(items.map(item => ({ ...item })));
             console.log("Fetched child items:");
             console.log(items);
@@ -60,16 +53,11 @@ export default function FolderComponent({folderInfo, updateParent}: Props)  {
         if (childfoldersAndNotes.length > 0) {
             return;
         }
-        fetchChildItems();
-        
-        
+        fetchChildItems(); 
     }
     async function deleteFolderClick(){  
-        if (!confirm("Voulez-vous vraiment supprimer ce dossier ?")) {
-            return; //refuser on quitte la fonction   
-        }
-        await deleteFolder(folderInfo.idFolder).then(() => {
-            if (updateParent) {
+        moveToBin(folderInfo).then(() => {
+            if (updateParent){
                 updateParent();
             }
         });
@@ -77,13 +65,17 @@ export default function FolderComponent({folderInfo, updateParent}: Props)  {
     }
 
     function renameFolderClick(){
-        const info = prompt("Veuillez entrer un nouveau nom :");
+        const info = prompt("Veuillez entrer un nouveau nom :", folderInfo.nameFolder);
         if (info) {
             console.log("Nom saisi :", info);
+            if (!info.trim()) {
+                console.log("Nom vide après trim, opération annulée.");
+                return;
+            }
             setFolderName(info);
             folderInfo.nameFolder = info;
-            //Appel service pour renommer le dossier
-            updateFolderName(folderInfo).then(() => fetchChildItems());
+            // Call the update function to save the new name
+            updateFolder(folderInfo).then(() => fetchChildItems());
         } else {
             console.log("Aucune info saisie");
         }
@@ -93,7 +85,8 @@ export default function FolderComponent({folderInfo, updateParent}: Props)  {
     /*-------------------------------Event---------------------------------*/
 
     const handleRightClick = (event) => {
-        event.preventDefault(); // Empêche le menu contextuel par défaut
+        event.preventDefault(); // Enable custom context menu
+        event.stopPropagation(); 
         if (menuContextuel) {
             return; 
         }
@@ -103,8 +96,28 @@ export default function FolderComponent({folderInfo, updateParent}: Props)  {
             actions: [
             { label: "Renommer", onClick: () => renameFolderClick() },
             { label: "Supprimer", onClick: () => deleteFolderClick() },
-            { label: "Ajouté sous dossier", onClick: () => createFolder(folderInfo.idFolder).then(() => fetchChildItems()) },
-            { label: "Ajouté note", onClick: () => createNote(folderInfo.idFolder, "", "").then(() => fetchChildItems()) },
+            { label: "Ajouter sous dossier", onClick: () => createFolder(folderInfo.idFolder).then(() => fetchChildItems()) },
+            { label: "Ajouter note", onClick: () => createNote(folderInfo.idFolder, "", "").then(() => fetchChildItems()) },
+            { 
+                    label: "📦 Exporter (ZIP)", 
+                    onClick: async () => {
+                        try {
+                            const blob = await exportFolderZip(folderInfo.idFolder);
+                            const url = window.URL.createObjectURL(blob);
+                            const a = document.createElement('a');
+                            a.href = url;
+                            a.download = `${folderInfo.nameFolder}.zip`;
+                            document.body.appendChild(a);
+                            a.click();
+                            a.remove();
+                            window.URL.revokeObjectURL(url);
+                        } catch (err) {
+                            console.error("Erreur ZIP dossier", err);
+                            alert("Impossible de zipper ce dossier effrayant !");
+                        }
+                        setMenuContextuel(null);
+                    }
+                }
             ],
             onClose: () => setMenuContextuel(null)
         });
@@ -129,10 +142,11 @@ export default function FolderComponent({folderInfo, updateParent}: Props)  {
             className={folderOpen ? "FolderOpen" : "FolderClosed"}
         >
 
-            {/* {folderOpen ? "📂" : "📁"} {folderInfo.nameFolder} */}
             {folderOpen
             ? <img className="coffinPic" src={coffinOpened} alt="Coffin Opened" />
-            : <img className="coffinPic" src={coffinClosed} alt="Coffin Closed" />} {folderInfo.nameFolder}
+            : <img className="coffinPic" src={coffinClosed} alt="Coffin Closed" />
+            }
+            {folderInfo.nameFolder}
         </h3>
         <img style={{left: `${spiderLeft}px`}} src={SpiderImage} alt="Image à déplacer" className="MonsterImage" />
         

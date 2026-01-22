@@ -4,7 +4,7 @@ import MenuContextuelComponent from "./MenuContextuelComponent";
 import type { MenuContextuelProps } from "./MenuContextuelComponent";
 import { useContext } from "react";
 import {SpookyContext}  from "../contexts/SpookyContext";
-import {updateNote, deleteNote} from "../service/SpookyService";
+import {updateNote, moveToBin ,exportNotePdf, getNoteById} from "../service/SpookyService";
 
 import parchment from "../assets/parchment.png";
 import './OpenNoteComponent.css';
@@ -22,7 +22,7 @@ export default function OpenNoteComponent({note, updateParent}: Props) {
   const spookyContext = useContext(SpookyContext);
   const [noteName, setNoteName] = useState<string>(note.nameNote);
 
-  if (!spookyContext) return null; // Sécurité si le contexte est null
+  if (!spookyContext) return null; // Security if the context is null
 
   useEffect(() => {
     setNoteName(note.nameNote);
@@ -34,12 +34,54 @@ export default function OpenNoteComponent({note, updateParent}: Props) {
     }
   }, []);
 
+  async function remplacerLiensMarkdown(texte : string) : Promise<string> {
+    const regex = /\[([^\]]+)\]\(([^)]+)\)/g;
+    let match;
+    let nouveauTexte = texte;
+  
+    // Table for storing pledges
+    const promesses = [];
+  
+    while ((match = regex.exec(texte)) !== null) {
+      const texteLien = match[1];
+      const url = match[2];
+      let numero = null;
+  
+      if (url.startsWith("http://localhost:5173")) {
+        const numMatch = url.match(/(\d+)$/);
+        if (numMatch) {
+          numero = parseInt(numMatch[1], 10);
+  
+          // Prepare the promise to replace the text
+          promesses.push(
+            getNoteById(numero).then(note => {
+              // Replace in the original text
+              nouveauTexte = nouveauTexte.replace(
+                `[${texteLien}](${url})`,
+                `[${note.nameNote}](${url})`
+              );
+            }).catch((error) => {
+              console.error(`Erreur lors de la récupération de la note avec l'ID ${numero}:`, error);
+              nouveauTexte = nouveauTexte.replace(
+                `[${texteLien}](${url})`,
+                `[Note supprimer](${url})`
+              );
+            })
+          );
+        }
+      }
+    }
+    // Wait until all the pledges are finished
+    await Promise.all(promesses);
+
+    return nouveauTexte;
+  }
+
   function renameNoteClick() {
     const newName = prompt("Entrez le nouveau nom de la note :", note.nameNote);
     if (newName && newName.trim() !== "") {
-        // Appeler la fonction de mise à jour du nom de la note ici
+        // Call the note name update function here
         console.log(`Renommer la note ${note.idNote} en ${newName}`);
-        // Par exemple : updateNoteName(note.idNote, newName).then(() => { ... });
         updateNote({
             ...note,
             nameNote: newName
@@ -60,31 +102,31 @@ export default function OpenNoteComponent({note, updateParent}: Props) {
   }
 
   function deleteNoteClick() {
-    const confirmDelete = window.confirm(`Êtes-vous sûr de vouloir supprimer la note "${note.nameNote}" ?`);
+    /*const confirmDelete = window.confirm(`Êtes-vous sûr de vouloir supprimer la note "${note.nameNote}" ?`);
     if (!confirmDelete) {
-      return; // L'utilisateur a annulé la suppression
-    }
+      return; 
+    }*/
     if (spookyContext.openedNote?.idNote === note.idNote) {
       spookyContext.setOpenedNote(null); 
     }
-    deleteNote(note.idNote).then(() => {
-        // Retirer la note de l'état global ou du contexte
-        alert("Note supprimée avec succès.");
+
+    moveToBin(note).then(() => {
         if (updateParent){
           updateParent();
         }
     });
-  }
-  
-    //TODO afficher erreur si le nom est invalide
+    
 
-  /*Menu contextuel*/
+  }
+
+  /*Context menu*/
   const [menuContextuel, setMenuContextuel] = useState<MenuContextuelProps | null>(null);
   
   const handleRightClick = (event) => {
-        event.preventDefault(); // Empêche le menu contextuel par défaut
+        event.preventDefault(); 
+        event.stopPropagation(); 
         if (menuContextuel) {
-            return; // Si le menu est déjà ouvert, ne rien faire
+            return; 
         }
         
         setMenuContextuel({
@@ -92,11 +134,39 @@ export default function OpenNoteComponent({note, updateParent}: Props) {
             actions: [
             { label: "Renommer", onClick: () => renameNoteClick() },
             { label: "Supprimer", onClick: () => deleteNoteClick() },
+            { label: "Copier lien", onClick: () => getLinkOfNote() },
+             { 
+                    label: "📄 Exporter PDF", 
+                    onClick: async () => {
+                        try {
+                            const blob = await exportNotePdf(note.idNote);
+                            const url = window.URL.createObjectURL(blob);
+                            const a = document.createElement('a');
+                            a.href = url;
+                            a.download = `${note.nameNote}.pdf`;
+                            document.body.appendChild(a);
+                            a.click();
+                            a.remove();
+                            window.URL.revokeObjectURL(url);
+                        } catch (err) {
+                            console.error("Erreur PDF", err);
+                            alert("Impossible de générer le PDF !");
+                        }
+                        setMenuContextuel(null);
+                    } 
+                },
             ],
             onClose: () => setMenuContextuel(null)
         });
 
     };
+
+
+  async function loadFileOnEditor(){
+    note.contentNote = await remplacerLiensMarkdown(note.contentNote || "");
+    spookyContext.setOpenedNote(note);
+    spookyContext.setUpdateNoteParentFolder(updateParent || (() => {}));
+  }
 
   const openFile = async () => {
     if (spookyContext.openedNote) {
@@ -104,20 +174,29 @@ export default function OpenNoteComponent({note, updateParent}: Props) {
         await spookyContext.editNoteSaveFunction();
         await new Promise(resolve => setTimeout(resolve, 300));
         if (updateParent) updateParent();
-        spookyContext.setOpenedNote(note);
-        spookyContext.setUpdateNoteParentFolder(updateParent || (() => {}));
+        loadFileOnEditor();
         console.log("Saved current note before opening new one.");
       }
     }else{
-      spookyContext.setOpenedNote(note);
-      spookyContext.setUpdateNoteParentFolder(updateParent || (() => {}));
+      loadFileOnEditor();
     }
   }
 
+  function getLinkOfNote(){
+
+    let link = "["+note.nameNote+"](" + window.location.origin + "/main/" + note.idNote + ")";
+    navigator.clipboard.writeText(link)
+    .then(() => {
+      console.log("Texte copié !");
+    })
+    .catch(err => {
+      console.error("Erreur lors de la copie :", err);
+    });
+
+  }
 
   return (
     <div className="OpenNoteComponent">
-        {/* <h4 onContextMenu={handleRigOhtClick} onClick={openFile}><img className="coffinPic" src={parchment} alt="Coffin icon" /> {note.nameNote}</h4> */}
         <h4 onContextMenu={handleRightClick} onClick={openFile}><img className="parchmentPic" src={parchment} alt="Coffin icon" /> {note.nameNote}</h4>
         {menuContextuel && (
           <MenuContextuelComponent
