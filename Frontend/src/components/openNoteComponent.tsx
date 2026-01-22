@@ -60,20 +60,31 @@ export default function OpenNoteComponent({note, updateParent}: Props) {
   }
 
   function deleteNoteClick() {
-    const confirmDelete = window.confirm(`Êtes-vous sûr de vouloir supprimer la note "${note.nameNote}" ?`);
+    /*const confirmDelete = window.confirm(`Êtes-vous sûr de vouloir supprimer la note "${note.nameNote}" ?`);
     if (!confirmDelete) {
       return; // L'utilisateur a annulé la suppression
-    }
+    }*/
     if (spookyContext.openedNote?.idNote === note.idNote) {
       spookyContext.setOpenedNote(null); 
     }
-    deleteNote(note.idNote).then(() => {
+
+    updateNote({
+      ...note,
+      toBin: true
+    }).then(() => {
+        if (updateParent){
+          updateParent();
+        }
+    });
+
+    //supprésion réelle
+    /*deleteNote(note.idNote).then(() => {
         // Retirer la note de l'état global ou du contexte
         alert("Note supprimée avec succès.");
         if (updateParent){
           updateParent();
         }
-    });
+    });*/
   }
   
     //TODO afficher erreur si le nom est invalide

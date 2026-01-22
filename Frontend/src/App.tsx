@@ -1,108 +1,18 @@
-import { useContext, useEffect, useState } from 'react';
-import './App.css';
-import FolderComponent from './components/folderComponent';
-import NoteComponent from './components/NoteComponent';
+import { NavLink, Route, Routes } from "react-router-dom";
 import { SpookyContext, SpookyProvider, useSpooky } from './contexts/SpookyContext';
-import type { Item } from './service/SpookyService';
-import OpenNoteComponent from './components/openNoteComponent';
-import type { Note } from './types/Note';
-import type { Folder } from './types/Folder';
-import { createNote, createFolder,  getAllFolders } from './service/SpookyService';
-import type { MenuContextuelProps } from './components/MenuContextuelComponent';
-import MenuContextuelComponent from './components/MenuContextuelComponent';
-import BandeauComponent from './components/bandeau/BandeauComponent';
-import NoNote from './assets/background_no_note.png';
-
-
-function AppContent() {
-  const {openedNote} = useSpooky();
-  const [foldersAndNotes, setFoldersAndNotes] = useState<Item[]>([]);
-  const [menuContextuel, setMenuContextuel] = useState<MenuContextuelProps | null>(null);
-
-  const spookyContext = useContext(SpookyContext);
-  if (!spookyContext) return null; // Sécurité si le contexte est null
-  //TODO mettre le menu contextuel dans le contexte pour l'utiliser partout
-
-  function fetchChildItems(){
-    getAllFolders().then((items : Item[]) => {
-        setFoldersAndNotes([...items]);
-        console.log(foldersAndNotes);
-    });
-  }
-
-  useEffect(() => {
-    fetchChildItems();
-  }, []);
-  
-  const handleRightClickExplorerDiv = (event) => {
-    event.preventDefault(); // Empêche le menu contextuel par défaut
-    console.log("right click explorer div");
-    if (menuContextuel) {
-      return; // Si le menu est déjà ouvert, ne rien faire
-    }
-    
-    setMenuContextuel({
-      position: { x: event.pageX - 10, y: event.pageY - 10},
-      actions: [
-        { label: "Ajouter sous dossier", onClick: () => createFolder(null).then(() => fetchChildItems()) },
-        { label: "Ajouter note", onClick: () => createNote(null , "", "").then(() => fetchChildItems()) },
-      ],
-      onClose: () => setMenuContextuel(null)
-    });
-
-  };
-  return (
-    <>
-      <div>
-        <BandeauComponent/>
-      </div>
-
-    <div className="MainDiv" style={{width: '100%'}}>
-
-      {menuContextuel && (
-      <MenuContextuelComponent
-          position={menuContextuel.position}
-          actions={menuContextuel.actions}
-          onClose={() => setMenuContextuel(null)}
-      />)}
-
-      {/* Barre latérale */}
-      <div className="ExplorerDiv">
-        <h2 className='explorateurTitle' onContextMenu={handleRightClickExplorerDiv}>Explorateur</h2>
-        
-        <div className="explorerContent">
-          {foldersAndNotes.map((item : Item) => {
-            if ("nameFolder" in item) {
-                let folder = item as Folder;
-                return <FolderComponent folderInfo={folder}/>;
-            }else{
-                let note = item as Note;
-                return <OpenNoteComponent note={note} />;
-            }
-          })}
-        </div>
-      </div>
-
-      {/* Zone de contenu */}
-      
-    <div className="OpenedNote">
-      {openedNote ? (
-        <NoteComponent key={openedNote.idNote} note={openedNote} updateParent={spookyContext.updateNoteParentFolder} />
-      ) : (
-        // <p>Aucune note ouverte</p>
-        <img src={NoNote} alt="NoNote" style={{width: '100%', height: 'auto'}}/>
-      )}
-    </div>
-    </div>
-    </>
-  );
-}
+import "./app.css";
+//import NotFoundComponent from "./core/components/NotFoundComponent";
+import Main from "./components/pages/mainPage.tsx";
+import Tmp from "./components/tmps.tsx";
+import Bin from "./components/pages/binPage.tsx";
 
 export default function App() {
-  return (
-    <SpookyProvider>
-      <AppContent />
-    </SpookyProvider>
-  );
-}
-
+  return <>
+      <Routes>
+        <Route path="/main" element={<Main/>} />
+        <Route path="/bin" element={<Bin/>} />
+        <Route path="*" element={<Tmp/>} />
+      </Routes>
+  </>
+  ;
+};

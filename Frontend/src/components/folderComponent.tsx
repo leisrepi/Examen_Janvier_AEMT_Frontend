@@ -7,7 +7,7 @@ import OpenNoteComponent from './openNoteComponent';
 import SpiderImage from "../assets/Spider.png";
 import coffinClosed from '../assets/coffin_closed.png';
 import coffinOpened from '../assets/coffin_opened.png';
-import {createFolder, getFolderChildreen, deleteFolder, updateFolderName, createNote} from '../service/SpookyService';
+import {createFolder, getFolderChildreen, deleteFolder, updateFolder, createNote} from '../service/SpookyService';
 
 
 
@@ -65,10 +65,19 @@ export default function FolderComponent({folderInfo, updateParent}: Props)  {
         
     }
     async function deleteFolderClick(){  
-        if (!confirm("Voulez-vous vraiment supprimer ce dossier ?")) {
+       /* if (!confirm("Voulez-vous vraiment supprimer ce dossier ?")) {
             return; //refuser on quitte la fonction   
         }
         await deleteFolder(folderInfo.idFolder).then(() => {
+            if (updateParent) {
+                updateParent();
+            }
+        });*/
+
+        updateFolder({
+            ...folderInfo,
+            toBin: true
+        }).then(() => {
             if (updateParent) {
                 updateParent();
             }
@@ -87,7 +96,7 @@ export default function FolderComponent({folderInfo, updateParent}: Props)  {
             setFolderName(info);
             folderInfo.nameFolder = info;
             //Appel service pour renommer le dossier
-            updateFolderName(folderInfo).then(() => fetchChildItems());
+            updateFolder(folderInfo).then(() => fetchChildItems());
         } else {
             console.log("Aucune info saisie");
         }

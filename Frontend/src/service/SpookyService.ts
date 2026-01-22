@@ -78,15 +78,18 @@ export const updateNote = async (note: Note): Promise<Note> => {
     const response = await axios.put<Note>(`${API_BASE_URL}/note/${note.idNote}`, {
         nameNote : note.nameNote,
         contentNote : note.contentNote,
-        idFolder: note.idFolder
+        idFolder: note.idFolder,
+        toBin : note.toBin
     });
     return response.data;
 };
 //TODO appeler sela pour renommer une note
 
-export const updateFolderName = async (folder: Folder): Promise<Folder> => {
+export const updateFolder = async (folder: Folder): Promise<Folder> => {
     const response = await axios.put<Folder>(`${API_BASE_URL}/folder/${folder.idFolder}`, {
         "name": folder.nameFolder,
+        "idParent": folder.idParent,
+        "toBin" : folder.toBin
     });
     return response.data;
 };
@@ -103,6 +106,22 @@ export const deleteFolder = async (folderId: number): Promise<void> => {
     console.error("Erreur Axios :", error.response);
     }
 }
-    
 
+export const getBinItems = async (): Promise<Item[]> => {
+    const response = await axios.get(`${API_BASE_URL}/bin`);
+    console.log('Fetched bin items:', response.data);
 
+    let listNote = response.data.orphanNotes as Note[];
+    let listFolder = response.data.folders as Folder[];
+    if (!listNote) {
+        listNote = [];
+    }
+    if (!listFolder) {
+        listFolder = [];
+    }
+    const finalItems: Item[] = listFolder;
+    for (const note of listNote) {
+        finalItems.push(note);
+    }
+    return finalItems;
+}
