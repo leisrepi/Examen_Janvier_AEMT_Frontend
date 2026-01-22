@@ -6,16 +6,17 @@ import type { Item } from '../../service/SpookyService';
 import OpenNoteComponent from '../../components/openNoteComponent';
 import type { Note } from '../../types/Note';
 import type { Folder } from '../../types/Folder';
-import { createNote, createFolder,  getAllFolders } from '../../service/SpookyService';
+import { createNote, createFolder, getAllFolders, getNoteById} from '../../service/SpookyService';
 import type { MenuContextuelProps } from '../../components/MenuContextuelComponent';
 import MenuContextuelComponent from '../../components/MenuContextuelComponent';
 import BandeauComponent from '../../components/bandeau/BandeauComponent';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import NoNote from '../../assets/background_no_note.png';
 
 
 
 export function AppContent() {
+  const { id } = useParams();
   const navigate = useNavigate();
   const {openedNote} = useSpooky();
   const [foldersAndNotes, setFoldersAndNotes] = useState<Item[]>([]);
@@ -34,6 +35,11 @@ export function AppContent() {
 
   useEffect(() => {
     fetchChildItems();
+    if (id) {
+      getNoteById(Number(id)).then((note: Note) => {
+        spookyContext.setOpenedNote(note);
+      });
+    }
   }, []);
   
   const handleRightClickExplorerDiv = (event) => {

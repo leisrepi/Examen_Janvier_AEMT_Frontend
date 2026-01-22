@@ -129,16 +129,6 @@ const NoteComponent: React.FC<NoteComponentProps> = ({ noteData, updateParent })
     console.log(handleSave);
   },[]);
 
-  const handleMarkdownClick = (event: React.MouseEvent<HTMLDivElement>) => {
-    if (isEditing) return;
-    const target = event.target as HTMLElement | null;
-    const link = target?.closest("a");
-    const href = link?.getAttribute("href");
-    if (!href) return;
-    event.preventDefault();
-    window.location.assign(href);
-  };
-
   return (
     <div className="noteDiv">
       <h2 style={{ textAlign: "center", margin: "0px"}}>📓 {isEditing ? "Mode Écriture" : "Mode Lecture"}</h2>
@@ -151,7 +141,7 @@ const NoteComponent: React.FC<NoteComponentProps> = ({ noteData, updateParent })
         style={{ width: "100%", marginBottom: "10px", padding: "5px", fontSize: "1.2em" }}
       />
 
-      <div className="markdown-body" onClick={handleMarkdownClick}>
+      <div className="markdown-body">
         <MDXEditor
           ref={editorRef}
           markdown={currentContent} // Valeur initiale
@@ -166,7 +156,14 @@ const NoteComponent: React.FC<NoteComponentProps> = ({ noteData, updateParent })
             markdownShortcutPlugin(),
             tablePlugin(),
             linkPlugin(),
-            linkDialogPlugin(),
+            //on force les liens a s'ouvrir normalement dans la meme fenetre (click molette disponible)
+            linkDialogPlugin({
+              onClickLinkCallback: (url) => window.location.assign(url),
+              onReadOnlyClickLinkCallback: (event, _node, url) => {
+                event.preventDefault();
+                window.location.assign(url);
+              }
+            }),
             toolbarPlugin({
               toolbarContents: () => (
                 <>

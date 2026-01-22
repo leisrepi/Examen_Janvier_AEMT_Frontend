@@ -9,6 +9,7 @@ import {
 } from '../service/SpookyService';
 import type { Folder } from '../types/Folder';
 import type { Note } from '../types/Note';
+import { useNavigate } from 'react-router';
 
 
 interface SpookyContextType {
@@ -36,11 +37,16 @@ interface SpookyContextType {
 export const SpookyContext = createContext<SpookyContextType | undefined>(undefined);
 
 export const SpookyProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const navigate = useNavigate();
   const [folders, setFolders] = useState<Folder[]>([]);
   const [openedNote, setOpenedNote] = useState<Note | null>(null);
   const [loadedPage, setLoadedPage] = useState<string>("noteView");
   const explorerRefreshRef = useRef<() => void>(() => {});
 
+
+  useEffect(() => {
+    navigate('/main/' + (openedNote?.idNote || ''), { replace: false });
+  }, [openedNote]);
 
   const editNoteSaveFunctionRef = useRef<() => void>(() => {});
 

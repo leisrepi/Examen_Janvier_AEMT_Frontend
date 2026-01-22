@@ -52,6 +52,12 @@ export const getFolderChildreen = async (folderId: number): Promise<Item[]> => {
     let listFolder = response.data.SousDossier as Folder[];
     return [...listNote, ...listFolder];
 }
+
+export const getNoteById = async (noteId: number): Promise<Note> => {
+    const response = await axios.get<Note>(`${API_BASE_URL}/note/${noteId}`);
+    return response.data;
+}
+
 export const createFolder = async (id : number|null): Promise<Folder> => {
     const response = await axios.post<Folder>(`${API_BASE_URL}/folder`, {
         "nameFolder": "Nouveau dossier",
