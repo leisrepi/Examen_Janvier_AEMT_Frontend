@@ -7,6 +7,8 @@ import {
   thematicBreakPlugin, 
   markdownShortcutPlugin,
   tablePlugin,
+  linkPlugin,
+  linkDialogPlugin,
   toolbarPlugin,
   UndoRedo,
   BoldItalicUnderlineToggles,
@@ -153,6 +155,8 @@ const NoteComponent: React.FC<NoteComponentProps> = ({ noteData, updateParent })
             thematicBreakPlugin(),
             markdownShortcutPlugin(),
             tablePlugin(),
+            linkPlugin(),
+            linkDialogPlugin(),
             toolbarPlugin({
               toolbarContents: () => (
                 <>
