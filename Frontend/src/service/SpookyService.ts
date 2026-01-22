@@ -79,12 +79,15 @@ export const createNote = async (folderId: number | null, nameNote: string, cont
 
 
 export const updateNote = async (note: Note): Promise<Note> => {
+    console.log(note);
     const response = await axios.put<Note>(`${API_BASE_URL}/note/${note.idNote}`, {
         nameNote : note.nameNote,
         contentNote : note.contentNote,
         idFolder: note.idFolder,
         toBin : note.toBin
     });
+    console.log('Updated note:');
+    console.log(response.data);
     return response.data;
 };
 

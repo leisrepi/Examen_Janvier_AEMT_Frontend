@@ -1,8 +1,9 @@
 
-.markdown-body h1, .markdown-body h2, .markdown-body h3
-.markdown-body h4, .markdown-body h5, .markdown-body h6  {
-  color: orangered;
-  font-family: 'Creepster', cursive;
+.markdown-body h1, .markdown-body h2, .markdown-body h3,
+.markdown-body h4, .markdown-body h5, .markdown-body h6 {
+  color: orangered !important;
+  font-family: 'spookyTheme', sans-serif !important;
+  text-align: left !important;
 }
 .markdown-body ul {
   list-style: square;
