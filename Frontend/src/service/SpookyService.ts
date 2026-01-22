@@ -8,14 +8,12 @@ interface FolderResponse {
   nameFolder: string;
   idParent: number | null;
   notes: Note[];
-  SousDossier: any[]; // tu peux typer plus tard
+  SousDossier: any[];
 }
 
 
 
 export type Item = Folder | Note;
-
-
 
 
 const API_BASE_URL = 'http://localhost:8080/spooky-api';
@@ -83,7 +81,7 @@ export const updateNote = async (note: Note): Promise<Note> => {
     });
     return response.data;
 };
-//TODO appeler sela pour renommer une note
+
 
 export const updateFolder = async (folder: Folder): Promise<Folder> => {
     const response = await axios.put<Folder>(`${API_BASE_URL}/folder/${folder.idFolder}`, {
@@ -105,6 +103,21 @@ export const deleteFolder = async (folderId: number): Promise<void> => {
     } catch (error: any) {
     console.error("Erreur Axios :", error.response);
     }
+}
+export const exportAllZip = async (): Promise<Blob> => {
+    const response = await fetch(`${API_BASE_URL}/note/export/zip`);
+    if (!response.ok) {
+        throw new Error("Erreur lors de l'export ZIP");
+    }
+    return await response.blob();
+}
+
+export const exportNotePdf = async (id: number): Promise<Blob> => {
+    const response = await fetch(`${API_BASE_URL}/note/${id}/export/pdf`);
+    if (!response.ok) {
+        throw new Error("Erreur lors de l'export PDF");
+    }
+    return await response.blob();
 }
 
 export const getBinItems = async (): Promise<Item[]> => {

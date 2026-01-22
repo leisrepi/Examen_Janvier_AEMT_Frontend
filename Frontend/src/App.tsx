@@ -3,7 +3,6 @@ import { SpookyContext, SpookyProvider, useSpooky } from './contexts/SpookyConte
 import "./app.css";
 //import NotFoundComponent from "./core/components/NotFoundComponent";
 import Main from "./components/pages/mainPage.tsx";
-import Tmp from "./components/tmps.tsx";
 import Bin from "./components/pages/binPage.tsx";
 
 export default function App() {
@@ -11,7 +10,6 @@ export default function App() {
       <Routes>
         <Route path="/main" element={<Main/>} />
         <Route path="/bin" element={<Bin/>} />
-        <Route path="*" element={<Tmp/>} />
       </Routes>
   </>
   ;
