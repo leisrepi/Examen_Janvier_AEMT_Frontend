@@ -6,4 +6,5 @@ export interface Note{
     lastModificationNote: Date;
     idFolder: number | null;
     toBin : boolean;
+    dateBinNote : Date | null;
 }
