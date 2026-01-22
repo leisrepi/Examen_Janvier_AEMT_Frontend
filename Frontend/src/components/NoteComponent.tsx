@@ -173,10 +173,12 @@ const NoteComponent: React.FC<NoteComponentProps> = ({ noteData, updateParent })
         <button onClick={() => setIsEditing(!isEditing)}>
           {isEditing ? "👁️ Mode Lecture" : "✏️ Mode Écriture"}
         </button>
-        {isEditing && <button onClick={handleSave}>💾 Enregistrer</button>}
-        <button onClick={() => removeNote(note.idNote)} style={{ backgroundColor: "#ff4d4d", color: "white" }}>
+        {/* No need for save button --> auto save
+            No need for delete button --> dedicated menu */}
+        {/* {isEditing && <button onClick={handleSave}>💾 Enregistrer</button>} */}
+        {/* <button onClick={() => removeNote(note.idNote)} style={{ backgroundColor: "#ff4d4d", color: "white" }}>
           🗑 Supprimer
-        </button>
+        </button> */}
       </div>
 
       <div className="metadata" style={{ marginTop: "15px", fontSize: "14px", color: "#555", borderTop: "1px solid #eee", paddingTop: "10px" }}>
