@@ -16,7 +16,8 @@ import {
   ListsToggle,
   CreateLink,
   InsertTable,
-  type MDXEditorMethods
+  type MDXEditorMethods,
+  updateLink$
 } from "@mdxeditor/editor";
 
 import "@mdxeditor/editor/style.css";
@@ -24,6 +25,7 @@ import { SpookyContext, useSpooky } from "../contexts/SpookyContext";
 import type { Note } from "../types/Note";
 import "./Markdown.css"; 
 import '../components/NoteComponent.css';
+import { getNoteById } from "../service/SpookyService";
 
 interface NoteComponentProps {
   noteData: Note;
@@ -56,6 +58,48 @@ const NoteComponent: React.FC<NoteComponentProps> = ({ noteData, updateParent })
 
   
 
+async function remplacerLiensMarkdown(texte : string) : Promise<string> {
+  const regex = /\[([^\]]+)\]\(([^)]+)\)/g;
+  let match;
+  let nouveauTexte = texte;
+
+  // Tableau pour stocker les promesses
+  const promesses = [];
+
+  while ((match = regex.exec(texte)) !== null) {
+    const texteLien = match[1];
+    const url = match[2];
+    let numero = null;
+
+    if (url.startsWith("http://localhost:5173")) {
+      const numMatch = url.match(/(\d+)$/);
+      if (numMatch) {
+        numero = parseInt(numMatch[1], 10);
+
+        // Préparer la promesse pour remplacer le texte
+        promesses.push(
+          getNoteById(numero).then(note => {
+            // Remplacer dans le texte original
+            nouveauTexte = nouveauTexte.replace(
+              `[${texteLien}](${url})`,
+              `[${note.nameNote}](${url})`
+            );
+          })
+        );
+      }
+    }
+  }
+
+  // Attendre que toutes les promesses soient terminées
+  await Promise.all(promesses);
+
+  return nouveauTexte;
+}
+
+  async function updateLink(){
+    setCurrentContent(await remplacerLiensMarkdown(note.contentNote || ""));
+  }
+
   useEffect(() => {
     updateNoteParent();
   }, [note]);
@@ -63,7 +107,8 @@ const NoteComponent: React.FC<NoteComponentProps> = ({ noteData, updateParent })
   // Initialisation
   useEffect(() => {
     setTitle(note.nameNote);
-    setCurrentContent(note.contentNote || "");
+    //setCurrentContent(note.contentNote || "");
+    updateLink();
     editorRef.current?.setMarkdown(note.contentNote || "");
     // Calcul initial des métadonnées
     calculateMetadata(note.contentNote || "");
